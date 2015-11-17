@@ -19,7 +19,6 @@ class VehicleLocationsController < ApplicationController
   # POST /vehicle_locations.json
   def create
     @vehicle_location = VehicleLocation.new(vehicle_location_params)
-
     if @vehicle_location.save
       render json: @vehicle_location, status: :created, location: @vehicle_location
     else
@@ -54,6 +53,6 @@ class VehicleLocationsController < ApplicationController
     end
 
     def vehicle_location_params
-      params[:vehicle_location]
+      params.require(:vehicle_location).permit(:vehicle, :latitude, :longitude)
     end
 end

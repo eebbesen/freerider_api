@@ -14,10 +14,10 @@
 ActiveRecord::Schema.define(version: 20151117015406) do
 
   create_table "vehicle_locations", force: :cascade do |t|
-    t.string   "vehicle"
-    t.float    "longitude"
-    t.float    "latitude"
-    t.datetime "created_at"
+    t.string   "vehicle",    null: false
+    t.float    "longitude",  null: false
+    t.float    "latitude",   null: false
+    t.datetime "created_at", null: false
   end
 
 end

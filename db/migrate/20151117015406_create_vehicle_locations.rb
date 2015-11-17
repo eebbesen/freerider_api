@@ -1,10 +1,10 @@
 class CreateVehicleLocations < ActiveRecord::Migration
   def change
     create_table :vehicle_locations do |t|
-      t.string :vehicle
-      t.float :longitude
-      t.float :latitude
-      t.datetime :created_at
+      t.string :vehicle, null: false
+      t.float :longitude, null: false
+      t.float :latitude, null: false
+      t.datetime :created_at, null: false
     end
   end
 end

@@ -13,7 +13,7 @@ class VehicleLocationsControllerTest < ActionController::TestCase
 
   test "should create vehicle_location" do
     assert_difference('VehicleLocation.count') do
-      post :create, vehicle_location: {  }
+      post :create, vehicle_location: { vehicle: 'CCC333', latitude: 1, longitude: -2.3456789}
     end
 
     assert_response 201
@@ -25,8 +25,9 @@ class VehicleLocationsControllerTest < ActionController::TestCase
   end
 
   test "should update vehicle_location" do
-    put :update, id: @vehicle_location, vehicle_location: {  }
+    put :update, id: @vehicle_location, vehicle_location: {  vehicle: 'AAA000', latitude: 3, longitude: -2.3456789 }
     assert_response 204
+    assert_equal(3, VehicleLocation.find_by_id(@vehicle_location).latitude)
   end
 
   test "should destroy vehicle_location" do
