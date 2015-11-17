@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+vehicle_one: 
+  vehicle: AAA000
+  latitude: 44.956706
+  longitude: -93.166822
+
+vehicle_two:
+  vehicle: BBB111
+  latitude: 44.939763
+  longitude: -93.168729
