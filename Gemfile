@@ -5,8 +5,7 @@ gem 'rails-api'
 gem 'caruby2go'
 gem 'sidekiq'
 gem 'pg'
-
-gem 'spring', :group => :development
+gem 'spring'
 
 gem 'shoulda', :group => :test
 
