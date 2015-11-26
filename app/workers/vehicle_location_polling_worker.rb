@@ -8,7 +8,7 @@ class VehicleLocationPollingWorker
       # Caruby2go provides [longitude, latitude]
       coordinates = record[:coordinates]
       vehicle_location = VehicleLocation.new(vehicle: record[:name],
-        longitude: coordinates[0], latitude: coordinates[1])
+                                             longitude: coordinates[0], latitude: coordinates[1])
       vehicle_location.save!
     end
   end
