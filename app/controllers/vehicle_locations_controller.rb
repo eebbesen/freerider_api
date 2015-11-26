@@ -48,11 +48,11 @@ class VehicleLocationsController < ApplicationController
 
   private
 
-    def set_vehicle_location
-      @vehicle_location = VehicleLocation.find(params[:id])
-    end
+  def set_vehicle_location
+    @vehicle_location = VehicleLocation.find(params[:id])
+  end
 
-    def vehicle_location_params
-      params.require(:vehicle_location).permit(:vehicle, :latitude, :longitude)
-    end
+  def vehicle_location_params
+    params.require(:vehicle_location).permit(:vehicle, :latitude, :longitude)
+  end
 end
