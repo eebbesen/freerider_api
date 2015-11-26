@@ -123,6 +123,7 @@ DEPENDENCIES
   pg
   rails (= 4.2.4)
   rails-api
+  redis
   shoulda
   sidekiq
   spring
