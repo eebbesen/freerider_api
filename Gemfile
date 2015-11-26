@@ -19,4 +19,5 @@ group :test, :development do
   gem 'byebug'
   gem 'sqlite3'
   gem 'rubocop'
+  gem 'simplecov'
 end
