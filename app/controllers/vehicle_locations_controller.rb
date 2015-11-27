@@ -46,6 +46,21 @@ class VehicleLocationsController < ApplicationController
     head :no_content
   end
 
+  def poll_and_persist(location = 'twincities')
+    records_persisted = 0
+    caruby2go = Caruby2go.new(ENV['CONSUMER_KEY'], location)
+    response = caruby2go.vehicles
+    response.each do |record|
+      # Caruby2go provides [longitude, latitude]
+      coordinates = record['coordinates']
+      vehicle_location = VehicleLocation.new(vehicle: record['name'],
+                                             longitude: coordinates[0], latitude: coordinates[1])
+      vehicle_location.save!
+      records_persisted += 1
+    end
+    records_persisted
+  end
+
   private
 
   def set_vehicle_location
