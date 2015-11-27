@@ -54,11 +54,19 @@ class VehicleLocationsController < ApplicationController
       # Caruby2go provides [longitude, latitude]
       coordinates = record['coordinates']
       vehicle_location = VehicleLocation.new(vehicle: record['name'],
-                                             longitude: coordinates[0], latitude: coordinates[1])
+                                             longitude: coordinates[0], 
+                                             latitude: coordinates[1],
+                                             location: location)
       vehicle_location.save!
       records_persisted += 1
     end
     records_persisted
+  end
+
+  def get_valid_locations
+    caruby2go = Caruby2go.new(ENV['CONSUMER_KEY'])
+    locations = caruby2go.locations.collect {|loc| loc['locationName']}
+    locations.sort
   end
 
   private
@@ -68,6 +76,6 @@ class VehicleLocationsController < ApplicationController
   end
 
   def vehicle_location_params
-    params.require(:vehicle_location).permit(:vehicle, :latitude, :longitude)
+    params.require(:vehicle_location).permit(:vehicle, :latitude, :longitude, :location)
   end
 end
