@@ -8,6 +8,10 @@ gem 'pg'
 gem 'redis'
 gem 'sidekiq'
 
+group :production do
+  gem 'newrelic_rpm'
+end
+
 # should be in dev/test but problems when not
 gem 'spring'
 
