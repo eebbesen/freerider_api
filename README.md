@@ -26,10 +26,14 @@ Config variables to set in deployment app or cofig/environments/development.rb
 `git push heroku master && heroku run rake db:migrate && heroku restart`
 
 ## Jobs
-### poll_and_persist_vehicles
-This rake task gets all vehicles for a city and persists the vehicle/location.
+### `poll_and_persist_vehicles`
+This task polls for and persists the vehicle/locations for all cities.
 
 `rake poll_and_persist_vehicles`
 
 I have it set up as a Heroku scheduled job.
 
+## `locations`
+This task returns the URI-ready city names where Car2Go operates
+
+`rake locations`

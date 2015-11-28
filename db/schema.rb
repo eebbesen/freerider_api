@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151127230431) do
+ActiveRecord::Schema.define(version: 20151128130506) do
 
   create_table "vehicle_locations", force: :cascade do |t|
     t.string   "vehicle",    null: false
@@ -19,6 +19,12 @@ ActiveRecord::Schema.define(version: 20151127230431) do
     t.float    "latitude",   null: false
     t.datetime "created_at", null: false
     t.string   "location"
+    t.string   "exterior"
+    t.string   "interior"
+    t.string   "vin"
   end
+
+  add_index "vehicle_locations", ["vehicle"], name: "index_vehicle_locations_on_vehicle"
+  add_index "vehicle_locations", ["vin"], name: "index_vehicle_locations_on_vin"
 
 end

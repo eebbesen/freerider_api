@@ -5,7 +5,7 @@ task :poll_and_persist_vehicles => :environment do
   locations.each do |location|
     puts "Processing vehicle locations for #{URI.decode location}"
     record_count = vlc.poll_and_persist location
-    puts "Finished processing #{record_count} vehicles for #{URI.decode location}"
+    puts "Finished processing #{record_count} vehicles for #{URI.decode location}\n"
   end
 end
 
