@@ -9,9 +9,15 @@ vehicle_one:
   latitude: 44.956706
   longitude: -93.166822
   location: twincities
+  vin: ABCD0000000000001
+  exterior: GOOD
+  interior: UNACCEPTABLE
 
 vehicle_two:
   vehicle: BBB111
   latitude: 44.939763
   longitude: -93.168729
   location: twincities
+  vin: ABCD0000000000001
+  exterior: GOOD
+  interior: GOOD
