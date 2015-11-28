@@ -23,7 +23,7 @@ Config variables to set in deployment app or cofig/environments/development.rb
 
 ## Deployment instructions
 ### Heroku
-`$ git push heroku master && heroku run rake db:migrate && heroku restart`
+`git push heroku master && heroku run rake db:migrate && heroku restart`
 
 ## Jobs
 ### poll_and_persist_vehicles
