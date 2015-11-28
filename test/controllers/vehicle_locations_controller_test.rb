@@ -58,13 +58,13 @@ class VehicleLocationsControllerTest < ActionController::TestCase
     assert_equal 3, record_count
   end
 
-  test 'should return locations' do
+  test 'should return locations URI-encoded' do
     mock_caruby2go = MiniTest::Mock.new
     mock_caruby2go.expect(:locations, MOCK_LOCATIONS)
     vehicle_locations_controller = VehicleLocationsController.new
     Caruby2go.stub(:new, mock_caruby2go) do
-      @locations = vehicle_locations_controller.get_valid_locations
+      @locations = vehicle_locations_controller.valid_locations
     end
-    assert_equal ['München', 'Twin Cities'], @locations
+    assert_equal ['M%C3%BCnchen', 'TwinCities'], @locations
   end
 end

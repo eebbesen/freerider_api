@@ -63,9 +63,12 @@ class VehicleLocationsController < ApplicationController
     records_persisted
   end
 
-  def get_valid_locations
+  # return valid locations encoded and de-spaced for valid calls
+  def valid_locations
     caruby2go = Caruby2go.new(ENV['CONSUMER_KEY'])
-    locations = caruby2go.locations.collect {|loc| loc['locationName']}
+    locations = caruby2go.locations.collect do |loc|
+      URI.escape(loc['locationName'].gsub(/\s+/, ''))
+    end
     locations.sort
   end
 
