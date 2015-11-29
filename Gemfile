@@ -5,7 +5,6 @@ gem 'rails-api'
 
 gem 'caruby2go'
 gem 'pg'
-gem 'redis'
 gem 'sidekiq'
 
 group :production do
