@@ -1,7 +1,7 @@
 desc "Query vehicle/locations from Car2Go and persist them"
-task :poll_and_persist_vehicles => :environment do
+task :poll_and_persist_vehicles, [:loc] => :environment do |t, args|
   vlc = VehicleLocationsController.new
-  locations = vlc.valid_locations
+  locations = args[:loc] ? [args[:loc]] : vlc.valid_locations
   locations.each do |location|
     puts "Processing vehicle locations for #{URI.decode location}"
     record_count = vlc.poll_and_persist location

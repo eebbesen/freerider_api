@@ -33,6 +33,10 @@ This task polls for and persists the vehicle/locations for all cities.
 
 `rake poll_and_persist_vehicles`
 
+Or for just one city
+
+`rake poll_and_persist_vehicles['twincities']`
+
 I have it set up as a Heroku scheduled job.
 
 ## `locations`
