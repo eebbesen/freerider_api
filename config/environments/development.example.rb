@@ -39,6 +39,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  ENV['REDISTOGO_URL'] = 'redis://localhost:6379/0'
+  # ENV['REDISTOGO_URL'] = 'redis://localhost:6379/0'
   ENV['NEW_RELIC_LICENSE_KEY'] = 'your_newrelic_license_key'
 end

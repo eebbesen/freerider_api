@@ -5,7 +5,7 @@ gem 'rails-api'
 
 gem 'caruby2go'
 gem 'pg'
-gem 'sidekiq'
+# gem 'sidekiq'
 
 group :production do
   gem 'newrelic_rpm'
