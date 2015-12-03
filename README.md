@@ -23,7 +23,11 @@ Config variables to set in deployment app or cofig/environments/development.rb
 
 ## Deployment instructions
 ### Heroku
-I have a rake task which will push, migrate, restart and (as a validation) run poll_and_persist_vehicles
+I have a rake task which will 
+* push code to Heroku 
+* run migrations on Heroku 
+* restart the application on Heroku 
+* run `poll_and_persist_vehicles['twincities']` against the Heroku instance (as a validation -- you should monitor the output) 
 
 `rake heroku:deploy_and_run`
 
