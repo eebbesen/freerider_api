@@ -5,6 +5,7 @@ gem 'rails-api'
 
 gem 'caruby2go'
 gem 'pg'
+gem 'dropbox-sdk'
 # gem 'sidekiq'
 
 group :production do

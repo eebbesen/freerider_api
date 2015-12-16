@@ -39,4 +39,8 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  config.dropbox_token = 'noket'
+  config.dropbox_key = 'yek'
+  config.dropbox_secret = 'terces'
 end
