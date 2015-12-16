@@ -7,6 +7,15 @@ require 'rails/test_help'
 # require 'sidekiq/testing'
 require 'minitest/mock'
 
+
+# save to CircleCI's artifacts directory if we're on CircleCI
+if ENV['CIRCLE_ARTIFACTS']
+  dir = File.join(ENV['CIRCLE_ARTIFACTS'], "coverage")
+  SimpleCov.coverage_dir(dir)
+end
+
+SimpleCov.start
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
