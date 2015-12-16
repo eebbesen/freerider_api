@@ -26,6 +26,11 @@ class VehicleLocationsControllerTest < ActionController::TestCase
     assert_response 201
   end
 
+  test 'fail on create' do
+    post :create, vehicle_location: { vehicle: nil }
+    assert_response :unprocessable_entity
+  end
+
   test 'should show vehicle_location' do
     get :show, id: @vehicle_location
     assert_response :success
@@ -35,6 +40,11 @@ class VehicleLocationsControllerTest < ActionController::TestCase
     put :update, id: @vehicle_location, vehicle_location: { vehicle: 'AAA000', latitude: 3, longitude: -2.3456789, location: 'twincities', vin: 'ABCD0000000000001'}
     assert_response 204
     assert_equal(3, VehicleLocation.find_by_id(@vehicle_location).latitude)
+  end
+
+  test 'fail on update' do
+    patch :update, id: @vehicle_location, vehicle_location: { vehicle: nil }
+    assert_response :unprocessable_entity
   end
 
   test 'should destroy vehicle_location' do
