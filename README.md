@@ -12,6 +12,7 @@ Config variables to set in deployment app or cofig/environments/development.rb
 
     ENV['CONSUMER_KEY'] = '<your_car2go_consumer_key>'
     ENV['NEW_RELIC_LICENSE_KEY'] = '<your_new_relic_license_key>'
+    ENV['DROPBOX_CLIENT_ACCESS_TOKEN'] = '<your_dropbox_access_token>'
 
 ### Database initialization
 
@@ -33,16 +34,25 @@ I have a rake task which will
 `rake heroku:deploy_and_run`
 
 ## Jobs
+### `poll_and_dropbox_vehicles`
+This task polls for and places one file per run per city in a dropbox location.
+
+`rake poll_and_dropbox_vehicles`
+
+Or for just one city
+
+`rake poll_and_dropbox_vehicles['twincities']`
+
+I have it set up as a Heroku scheduled job.
+
 ### `poll_and_persist_vehicles`
-This task polls for and persists the vehicle/locations for all cities.
+This task polls for and persists the vehicle/locations for all cities into the database.
 
 `rake poll_and_persist_vehicles`
 
 Or for just one city
 
 `rake poll_and_persist_vehicles['twincities']`
-
-I have it set up as a Heroku scheduled job.
 
 ## `locations`
 This task returns the URI-ready city names where Car2Go operates

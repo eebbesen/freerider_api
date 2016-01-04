@@ -6,7 +6,7 @@ namespace :heroku do
       system 'bundle install'
       system 'heroku run rake db:migrate'
       system 'heroku restart'
-      system "heroku run rake poll_and_persist_vehicles['twincities']"
+      system "heroku run rake poll_and_dropbox_vehicles['twincities']"
     end
   end
 end
