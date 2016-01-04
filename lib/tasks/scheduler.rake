@@ -10,7 +10,7 @@ task :poll_and_persist_vehicles, [:loc] => :environment do |_t, args|
 end
 
 desc 'Query vehicle/locations from Car2Go and persist JSON in Dropbox'
-task :poll_and_csv_vehicles, [:loc] => :environment do |_t, args|
+task :poll_and_dropbox_vehicles, [:loc] => :environment do |_t, args|
   vlc = VehicleLocationsController.new
   locations = args[:loc] ? [args[:loc]] : vlc.valid_locations
   locations.each do |location|
