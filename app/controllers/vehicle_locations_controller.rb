@@ -1,4 +1,6 @@
 class VehicleLocationsController < ApplicationController
+  include DropboxPersistence
+
   before_action :set_vehicle_location, only: [:show, :update, :destroy]
 
   # GET /vehicle_locations
@@ -48,13 +50,11 @@ class VehicleLocationsController < ApplicationController
 
   def poll_and_persist(location = 'twincities')
     records_persisted = 0
-    caruby2go = Caruby2go.new(ENV['CONSUMER_KEY'], location)
-    response = caruby2go.vehicles
-    response.each do |record|
+    poll(location).each do |record|
       # Caruby2go provides coordinates in [longitude, latitude]
       coordinates = record['coordinates']
       vehicle_location = VehicleLocation.new(vehicle: record['name'],
-                                             longitude: coordinates[0], 
+                                             longitude: coordinates[0],
                                              latitude: coordinates[1],
                                              location: location,
                                              vin: record['vin'],
@@ -64,6 +64,10 @@ class VehicleLocationsController < ApplicationController
       records_persisted += 1
     end
     records_persisted
+  end
+
+  def poll_and_dropbox(location = 'twincities')
+    save_to_dropbox poll(location)
   end
 
   # return valid locations encoded and de-spaced for valid calls
@@ -77,11 +81,23 @@ class VehicleLocationsController < ApplicationController
 
   private
 
+  def poll(location = 'twincities')
+    @city = location
+    caruby2go = Caruby2go.new(ENV['CONSUMER_KEY'], @city)
+    caruby2go.vehicles
+  end
+
   def set_vehicle_location
     @vehicle_location = VehicleLocation.find(params[:id])
   end
 
   def vehicle_location_params
-    params.require(:vehicle_location).permit(:vehicle, :latitude, :longitude, :location, :vin, :exterior, :interior)
+    params.require(:vehicle_location).permit(:vehicle,
+                                             :latitude,
+                                             :longitude,
+                                             :location,
+                                             :vin,
+                                             :exterior,
+                                             :interior)
   end
 end

@@ -15,8 +15,9 @@ task :poll_and_csv_vehicles, [:loc] => :environment do |_t, args|
   locations = args[:loc] ? [args[:loc]] : vlc.valid_locations
   locations.each do |location|
     puts "Processing vehicle locations for #{URI.decode location}"
-    record_count = vlc.poll_and_persist location
-    puts "Finished processing #{record_count} vehicles for #{URI.decode location}\n"
+    success = vlc.poll_and_dropbox location
+    puts "Successfully processed vehicles for #{URI.decode location}\n" if success
+    puts "Error processing vehicles for #{URI.decode location}\n" unless success
   end
 end
 
