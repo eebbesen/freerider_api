@@ -41,4 +41,9 @@ Rails.application.configure do
 
   # ENV['REDISTOGO_URL'] = 'redis://localhost:6379/0'
   ENV['NEW_RELIC_LICENSE_KEY'] = 'your_newrelic_license_key'
+
+  # dropbox
+  config.dropbox_token = ENV['DROPBOX_CLIENT_ACCESS_TOKEN']
+  config.dropbox_key = ENV['DROPBOX_APP_KEY']
+  config.dropbox_secret = ENV['DROPBOX_APP_SECRET']
 end
