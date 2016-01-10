@@ -33,6 +33,10 @@ class TestDropboxClient < DropboxClient
       'entries' => [['/amsterdam-20160103_222646', { 'rev' => '5413a6ecb', 'thumb_exists' => false, 'path' => '/amsterdam-20160103_222646', 'is_dir' => false, 'client_mtime' => 'Mon, 04 Jan 2016 04:26:47 +0000', 'icon' => 'page_white', 'bytes' => 87200, 'modified' => 'Mon, 04 Jan 2016 04:26:47 +0000', 'size' => '85.2 KB', 'root' => 'app_folder', 'mime_type' => 'application/octet-stream', 'revision' => 5 }], ['/arlingtoncounty-20160103_222649', { 'rev' => '6413a6ecb', 'thumb_exists' => false, 'path' => '/arlingtoncounty-20160103_222649', 'is_dir' => false, 'client_mtime' => 'Mon, 04 Jan 2016 04:26:49 +0000', 'icon' => 'page_white', 'bytes' => 19389, 'modified' => 'Mon, 04 Jan 2016 04:26:49 +0000', 'size' => '18.9 KB', 'root' => 'app_folder', 'mime_type' => 'application/octet-stream', 'revision' => 6 }]],
       'reset' => true }
   end
+
+  def get_file(_filename)
+    '[{"address"=>"W 4th St 90, 55102 Saint Paul", "coordinates"=>[-93.097112, 44.944025, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>36, "interior"=>"GOOD", "name"=>"AB5102", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME000"}, {"address"=>"Marshal Ave 1831, 55104 Saint Paul", "coordinates"=>[-93.177645, 44.949533, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>66, "interior"=>"GOOD", "name"=>"AB5104", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME001"}, {"address"=>"Ford Pkway 1974, 55116 Saint Paul", "coordinates"=>[-93.183036, 44.917769, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>18, "interior"=>"GOOD", "name"=>"AB7740", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME002"}]'
+  end
 end
 
 class DropboxPersistenceTest < ActiveSupport::TestCase
@@ -62,19 +66,38 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
     @dropbox_persistence.save_to_dropbox(MOCK_VEHICLES)
 
     assert_equal 'yek', @fake_dropbox_client.token
-    # put_file called
     assert_equal filename, @fake_dropbox_client.filename
     assert_not_nil @fake_dropbox_client.file
   end
 
-  test "should make 'DropboxClient#delta' call" do
+  test 'should get and format new file names' do
     new_file_names = @dropbox_persistence.send(:new_files)
 
     assert_equal 2, new_file_names.size
     assert_equal 'amsterdam-20160103_222646', new_file_names[0]
   end
 
-  test 'should persist cursor from Dropbox call' do
+  test 'should set cursor from Dropbox call' do
+    assert_nil @dropbox_persistence.cursor
 
+    @dropbox_persistence.send(:new_files)
+
+    assert_not_nil @dropbox_persistence.cursor
+  end
+
+  test 'should return Array of data' do
+    data = @dropbox_persistence.send(:get_file_data, 'filename')
+
+    assert_equal Array, data.class
+    assert_equal 3, data.size
+    assert_equal 'HAPPYGOFUNTIME000', data[0]['vin']
+  end
+
+  test 'should return data from multiple files' do
+    data = @dropbox_persistence.read_from_dropbox
+
+    assert_equal 2, data.keys.size
+    assert_equal 'amsterdam-20160103_222646', data.keys[0]
+    assert_equal 'arlingtoncounty-20160103_222649', data.keys[1]
   end
 end
