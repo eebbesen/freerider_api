@@ -25,6 +25,14 @@ class TestDropboxClient < DropboxClient
   def initialize(token)
     @token = token
   end
+
+  def delta(cursor)
+    cursor = 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE'
+    { 'has_more' => true,
+      'cursor' => cursor,
+      'entries' => [['/amsterdam-20160103_222646', { 'rev' => '5413a6ecb', 'thumb_exists' => false, 'path' => '/amsterdam-20160103_222646', 'is_dir' => false, 'client_mtime' => 'Mon, 04 Jan 2016 04:26:47 +0000', 'icon' => 'page_white', 'bytes' => 87200, 'modified' => 'Mon, 04 Jan 2016 04:26:47 +0000', 'size' => '85.2 KB', 'root' => 'app_folder', 'mime_type' => 'application/octet-stream', 'revision' => 5 }], ['/arlingtoncounty-20160103_222649', { 'rev' => '6413a6ecb', 'thumb_exists' => false, 'path' => '/arlingtoncounty-20160103_222649', 'is_dir' => false, 'client_mtime' => 'Mon, 04 Jan 2016 04:26:49 +0000', 'icon' => 'page_white', 'bytes' => 19389, 'modified' => 'Mon, 04 Jan 2016 04:26:49 +0000', 'size' => '18.9 KB', 'root' => 'app_folder', 'mime_type' => 'application/octet-stream', 'revision' => 6 }]],
+      'reset' => true }
+  end
 end
 
 class DropboxPersistenceTest < ActiveSupport::TestCase
@@ -49,13 +57,24 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   test 'should persist a file in Dropbox' do
     filename = "greenbay-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
     tempfile = Tempfile.new filename
-    tempfile.write MOCK_VEHICLES\
+    tempfile.write MOCK_VEHICLES
 
     @dropbox_persistence.save_to_dropbox(MOCK_VEHICLES)
 
-    assert 'yek', @fake_dropbox_client.token
+    assert_equal 'yek', @fake_dropbox_client.token
     # put_file called
-    assert filename, @fake_dropbox_client.filename
+    assert_equal filename, @fake_dropbox_client.filename
     assert_not_nil @fake_dropbox_client.file
+  end
+
+  test "should make 'DropboxClient#delta' call" do
+    new_file_names = @dropbox_persistence.send(:new_files)
+
+    assert_equal 2, new_file_names.size
+    assert_equal 'amsterdam-20160103_222646', new_file_names[0]
+  end
+
+  test 'should persist cursor from Dropbox call' do
+
   end
 end

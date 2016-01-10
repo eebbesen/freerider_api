@@ -22,6 +22,13 @@ module DropboxPersistence
     client.put_file(filename, file(data))
   end
 
+  def new_files
+    delta = client.delta @cursor
+    delta['entries'].each.map do |record|
+      record[0].gsub /^\\/, ''
+    end
+  end
+
   # <city_name>-<timestamp>
   def filename
     "#{city.downcase.gsub(/\s+/, '')}-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
