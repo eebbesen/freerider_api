@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151128130506) do
+ActiveRecord::Schema.define(version: 20160109232224) do
+
+  create_table "add_dropbox_metadata", force: :cascade do |t|
+    t.string   "cursor",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "vehicle_locations", force: :cascade do |t|
     t.string   "vehicle",    null: false
