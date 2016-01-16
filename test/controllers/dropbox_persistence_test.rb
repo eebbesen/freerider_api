@@ -16,7 +16,7 @@ end
 ##
 # Mockish thing to simulate DropboxClient
 class TestDropboxClient < DropboxClient
-  attr_reader :filename, :file, :token
+  attr_reader :filename, :file, :token, :called_cursor
   def put_file(filename, file)
     @filename = filename
     @file = file
@@ -27,9 +27,10 @@ class TestDropboxClient < DropboxClient
   end
 
   def delta(cursor)
-    cursor = 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE'
+    @called_cursor = cursor
+
     { 'has_more' => true,
-      'cursor' => cursor,
+      'cursor' => 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE',
       'entries' => [['/amsterdam-20160103_222646', { 'rev' => '5413a6ecb', 'thumb_exists' => false, 'path' => '/amsterdam-20160103_222646', 'is_dir' => false, 'client_mtime' => 'Mon, 04 Jan 2016 04:26:47 +0000', 'icon' => 'page_white', 'bytes' => 87200, 'modified' => 'Mon, 04 Jan 2016 04:26:47 +0000', 'size' => '85.2 KB', 'root' => 'app_folder', 'mime_type' => 'application/octet-stream', 'revision' => 5 }], ['/arlingtoncounty-20160103_222649', { 'rev' => '6413a6ecb', 'thumb_exists' => false, 'path' => '/arlingtoncounty-20160103_222649', 'is_dir' => false, 'client_mtime' => 'Mon, 04 Jan 2016 04:26:49 +0000', 'icon' => 'page_white', 'bytes' => 19389, 'modified' => 'Mon, 04 Jan 2016 04:26:49 +0000', 'size' => '18.9 KB', 'root' => 'app_folder', 'mime_type' => 'application/octet-stream', 'revision' => 6 }]],
       'reset' => true }
   end
@@ -99,5 +100,31 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
     assert_equal 2, data.keys.size
     assert_equal 'amsterdam-20160103_222646', data.keys[0]
     assert_equal 'arlingtoncounty-20160103_222649', data.keys[1]
+  end
+
+  test 'should persist new cursor value' do
+    assert_difference('DropboxMetadata.count', 1) do
+      @dropbox_persistence.read_from_dropbox
+    end
+
+    assert_equal 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE', @dropbox_persistence.cursor
+  end
+
+  test 'should use most recent cursor from database when none provided' do
+    last_droppbox_metadata = DropboxMetadata.last
+
+    @dropbox_persistence.read_from_dropbox
+
+    assert_equal last_droppbox_metadata.cursor, @fake_dropbox_client.called_cursor
+  end
+
+  test 'should use requested cursor' do
+    last_droppbox_metadata = DropboxMetadata.last
+    assert_not_equal 'x', last_droppbox_metadata.cursor
+    @dropbox_persistence.cursor = 'x'
+
+    @dropbox_persistence.read_from_dropbox
+
+    assert_equal 'x', @fake_dropbox_client.called_cursor
   end
 end

@@ -12,11 +12,11 @@ module DropboxPersistence
   end
 
   def read_from_dropbox
-    data = {}
-    new_files.each do |filename|
-      data[filename] = get_file_data filename
+    file_data = new_files.inject({}) do |data, new_filename|
+      data.merge(new_filename => get_file_data(new_filename))
     end
-    data
+    DropboxMetadata.new(cursor: cursor, created_at: Time.now).save
+    file_data
   end
 
   def cursor
@@ -40,6 +40,7 @@ module DropboxPersistence
   end
 
   def new_files
+    @cursor ||= DropboxMetadata.last.cursor
     delta = client.delta @cursor
     filenames = delta['entries'].each.map do |record|
       record[0].gsub(%r{^/}, '')
