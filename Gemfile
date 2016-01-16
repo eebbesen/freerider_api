@@ -21,7 +21,8 @@ gem 'shoulda', group: :test
 
 group :test, :development do
   gem 'byebug'
-  gem 'sqlite3'
+  gem 'minitest-reporters'
   gem 'rubocop'
   gem 'simplecov'
+  gem 'sqlite3'
 end
