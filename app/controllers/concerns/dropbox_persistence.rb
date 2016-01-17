@@ -15,6 +15,7 @@ module DropboxPersistence
     file_data = new_files.inject({}) do |data, new_filename|
       data.merge(new_filename => get_file_data(new_filename))
     end
+    Rails.logger.info "Attempting to save cursor #{cursor}"
     DropboxMetadata.new(cursor: cursor, created_at: Time.now).save
     file_data
   end
