@@ -15,6 +15,8 @@ end
 # should be in dev/test but problems when not
 gem 'spring'
 
+gem 'minitest-ci', :git => 'git@github.com:circleci/minitest-ci.git'
+
 # dev/test
 
 gem 'shoulda', group: :test
