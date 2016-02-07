@@ -16,6 +16,7 @@ module DropboxPersistence
       v.each do |vl|
         VehicleLocation.from_json(vl.merge({filename: k})).save!
       end
+      client.destroy k
     end
   end
 
