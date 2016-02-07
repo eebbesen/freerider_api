@@ -56,6 +56,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   setup do
     @fake_dropbox_client = TestDropboxClient.new('yek')
     @dropbox_persistence = TestDropboxPersister.new('GREeN BAY', @fake_dropbox_client)
+    ENV['NO_DELETE_DB_FILE'] = nil
   end
 
   test 'should create a filename in the proper format' do
@@ -104,7 +105,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   end
 
   test 'should return data from multiple files' do
-    data = @dropbox_persistence.read_from_dropbox
+    data = @dropbox_persistence.send(:read_from_dropbox)
 
     assert_equal 2, data.keys.size
     assert_equal 'amsterdam-20160103_222646', data.keys[0]
@@ -113,7 +114,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
 
   test 'should persist new cursor value' do
     assert_difference('DropboxMetadata.count', 1) do
-      @dropbox_persistence.read_from_dropbox
+      @dropbox_persistence.send(:read_from_dropbox)
     end
 
     assert_equal 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE', @dropbox_persistence.cursor
@@ -122,7 +123,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   test 'should use most recent cursor from database when none provided' do
     last_droppbox_metadata = DropboxMetadata.last
 
-    @dropbox_persistence.read_from_dropbox
+    @dropbox_persistence.send(:read_from_dropbox)
 
     assert_equal last_droppbox_metadata.cursor, @fake_dropbox_client.called_cursor
   end
@@ -132,17 +133,26 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
     assert_not_equal 'x', last_droppbox_metadata.cursor
     @dropbox_persistence.cursor = 'x'
 
-    @dropbox_persistence.read_from_dropbox
+    @dropbox_persistence.send(:read_from_dropbox)
 
     assert_equal 'x', @fake_dropbox_client.called_cursor
   end
 
-  test 'persist_from_dropbox' do
+  test 'should persist data and delete file from dropbox' do
     assert_difference 'VehicleLocation.count', 6 do
-      @dropbox_persistence.persist_from_dropbox
+      @dropbox_persistence.save_from_dropbox
     end
     assert_equal ["amsterdam-20160103_222646",
                   "arlingtoncounty-20160103_222649"],
+                 @fake_dropbox_client.destroyed_files
+  end
+
+  test 'should persist data but not delete from dropbox when NO_DELETE_DB_FILE' do
+    ENV['NO_DELETE_DB_FILE'] = '1'
+    assert_difference 'VehicleLocation.count', 6 do
+      @dropbox_persistence.save_from_dropbox
+    end
+    assert_equal [],
                  @fake_dropbox_client.destroyed_files
   end
 end
