@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160109232224) do
+ActiveRecord::Schema.define(version: 20160206234946) do
 
   create_table "dropbox_metadata", force: :cascade do |t|
     t.string   "cursor",     null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160109232224) do
     t.string   "exterior"
     t.string   "interior"
     t.string   "vin"
+    t.string   "filename"
   end
 
   add_index "vehicle_locations", ["vehicle"], name: "index_vehicle_locations_on_vehicle"

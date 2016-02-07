@@ -8,7 +8,7 @@ module DropboxPersistence
   extend ActiveSupport::Concern
 
   def save_to_dropbox(data)
-    save_file(data)
+    save_file data
   end
 
   def read_from_dropbox
