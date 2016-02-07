@@ -127,4 +127,10 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
 
     assert_equal 'x', @fake_dropbox_client.called_cursor
   end
+
+  test 'persist_from_dropbox' do
+    assert_difference 'VehicleLocation.count', 6 do
+      @dropbox_persistence.persist_from_dropbox
+    end
+  end
 end

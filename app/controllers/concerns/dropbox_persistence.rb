@@ -11,6 +11,14 @@ module DropboxPersistence
     save_file data
   end
 
+  def persist_from_dropbox
+    read_from_dropbox.each do |k, v|
+      v.each do |vl|
+        VehicleLocation.from_json(vl.merge({filename: k})).save!
+      end
+    end
+  end
+
   def read_from_dropbox
     file_data = new_files.inject({}) do |data, new_filename|
       data.merge(new_filename => get_file_data(new_filename))

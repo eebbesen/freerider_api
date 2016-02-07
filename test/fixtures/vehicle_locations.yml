@@ -6,6 +6,7 @@ vehicle_one:
   vin: ABCD0000000000001
   exterior: GOOD
   interior: UNACCEPTABLE
+  filename: amsterdam-20160101_010116
 
 vehicle_two:
   vehicle: BBB111
@@ -15,3 +16,4 @@ vehicle_two:
   vin: ABCD0000000000001
   exterior: GOOD
   interior: GOOD
+  filename: amsterdam-20160104_010406
