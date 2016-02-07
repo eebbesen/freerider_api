@@ -11,6 +11,10 @@ class TestDropboxPersister
     @city = city
     @client = client
   end
+
+  def set_cursor=(cursor)
+    @cursor = cursor
+  end
 end
 
 ##
@@ -23,7 +27,6 @@ class TestDropboxClient < DropboxClient
   end
 
   def initialize(token)
-    byebug
     @token = token
   end
 
@@ -89,11 +92,23 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   end
 
   test 'should set cursor from Dropbox call' do
-    assert_nil @dropbox_persistence.cursor
-
     @dropbox_persistence.send(:new_files)
 
     assert_not_nil @dropbox_persistence.cursor
+  end
+
+  test 'should not error out if no persisted DropboxMetadata' do
+    DropboxMetadata.destroy_all
+
+    @dropbox_persistence.send(:new_files)
+
+    assert_equal 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE', @dropbox_persistence.cursor
+  end
+
+  test 'should return empty String for cursor if no persisted DropboxMetadata' do
+    DropboxMetadata.destroy_all
+
+    assert_equal '', @dropbox_persistence.cursor
   end
 
   test 'should return Array of data' do
@@ -117,7 +132,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
       @dropbox_persistence.send(:read_from_dropbox)
     end
 
-    assert_equal 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE', @dropbox_persistence.cursor
+    assert_equal 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE', DropboxMetadata.last.cursor
   end
 
   test 'should use most recent cursor from database when none provided' do
@@ -131,7 +146,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   test 'should use requested cursor' do
     last_droppbox_metadata = DropboxMetadata.last
     assert_not_equal 'x', last_droppbox_metadata.cursor
-    @dropbox_persistence.cursor = 'x'
+    @dropbox_persistence.set_cursor = 'x'
 
     @dropbox_persistence.send(:read_from_dropbox)
 

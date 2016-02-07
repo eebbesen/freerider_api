@@ -22,11 +22,7 @@ module DropboxPersistence
   end
 
   def cursor
-    @cursor
-  end
-
-  def cursor=(cursor)
-    @cursor = cursor
+    @cursor ||= DropboxMetadata.last ? DropboxMetadata.last.cursor : ''
   end
 
   private
@@ -42,8 +38,7 @@ module DropboxPersistence
   end
 
   def new_files
-    @cursor ||= DropboxMetadata.last.cursor
-    delta = client.delta @cursor
+    delta = client.delta cursor
     filenames = delta['entries'].each.map do |record|
       record[0].gsub(%r{^/}, '')
     end
