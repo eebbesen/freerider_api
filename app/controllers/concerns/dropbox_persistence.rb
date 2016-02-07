@@ -43,10 +43,12 @@ module DropboxPersistence
       record[0].gsub(%r{^/}, '')
     end
     @cursor = delta['cursor']
+    Rails.logger.info "Got #{filenames.count} new files using cursor #{@cursor}."
     filenames
   end
 
   def get_file_data(filename)
+    Rails.logger.debug "Getting data for #{filename}."
     file = client.get_file filename
     data = file.gsub(%r{=>}, ':')
     ActiveSupport::JSON.decode(data)
