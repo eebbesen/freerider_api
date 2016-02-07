@@ -56,6 +56,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   setup do
     @fake_dropbox_client = TestDropboxClient.new('yek')
     @dropbox_persistence = TestDropboxPersister.new('GREeN BAY', @fake_dropbox_client)
+    ENV['NO_DELETE_DB_FILE'] = nil
   end
 
   test 'should create a filename in the proper format' do
