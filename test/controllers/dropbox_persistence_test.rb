@@ -119,14 +119,6 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
     assert_equal 'HAPPYGOFUNTIME000', data[0]['vin']
   end
 
-  test 'should return data from multiple files' do
-    data = @dropbox_persistence.send(:read_from_dropbox)
-
-    assert_equal 2, data.keys.size
-    assert_equal 'amsterdam-20160103_222646', data.keys[0]
-    assert_equal 'arlingtoncounty-20160103_222649', data.keys[1]
-  end
-
   test 'should persist new cursor value' do
     assert_difference('DropboxMetadata.count', 1) do
       @dropbox_persistence.send(:read_from_dropbox)
