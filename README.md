@@ -25,7 +25,7 @@ Config variables to set in deployment app or cofig/environments/development.rb
 
 ## Deployment instructions
 ### Heroku
-I have a rake task which will 
+To run a rake task which will 
 * push code to Heroku 
 * run migrations on Heroku 
 * restart the application on Heroku 
@@ -42,8 +42,6 @@ This task polls for and places one file per run per city in a dropbox location.
 Or for just one city
 
 `rake poll_and_dropbox_vehicles['twincities']`
-
-I have it set up as a Heroku scheduled job.
 
 ### `poll_and_persist_vehicles`
 This task polls for and persists the vehicle/locations for all cities into the database.

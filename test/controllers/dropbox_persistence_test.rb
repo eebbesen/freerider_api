@@ -23,7 +23,12 @@ class TestDropboxClient < DropboxClient
   end
 
   def initialize(token)
+    byebug
     @token = token
+  end
+
+  def destroyed_files
+    @destroyed_files ||= []
   end
 
   def delta(cursor)
@@ -37,6 +42,10 @@ class TestDropboxClient < DropboxClient
 
   def get_file(_filename)
     '[{"address"=>"W 4th St 90, 55102 Saint Paul", "coordinates"=>[-93.097112, 44.944025, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>36, "interior"=>"GOOD", "name"=>"AB5102", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME000"}, {"address"=>"Marshal Ave 1831, 55104 Saint Paul", "coordinates"=>[-93.177645, 44.949533, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>66, "interior"=>"GOOD", "name"=>"AB5104", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME001"}, {"address"=>"Ford Pkway 1974, 55116 Saint Paul", "coordinates"=>[-93.183036, 44.917769, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>18, "interior"=>"GOOD", "name"=>"AB7740", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME002"}]'
+  end
+
+  def destroy(_filename)
+    destroyed_files << _filename
   end
 end
 
@@ -126,5 +135,14 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
     @dropbox_persistence.read_from_dropbox
 
     assert_equal 'x', @fake_dropbox_client.called_cursor
+  end
+
+  test 'persist_from_dropbox' do
+    assert_difference 'VehicleLocation.count', 6 do
+      @dropbox_persistence.persist_from_dropbox
+    end
+    assert_equal ["amsterdam-20160103_222646",
+                  "arlingtoncounty-20160103_222649"],
+                 @fake_dropbox_client.destroyed_files
   end
 end

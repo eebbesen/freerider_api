@@ -8,7 +8,16 @@ module DropboxPersistence
   extend ActiveSupport::Concern
 
   def save_to_dropbox(data)
-    save_file(data)
+    save_file data
+  end
+
+  def persist_from_dropbox
+    read_from_dropbox.each do |k, v|
+      v.each do |vl|
+        VehicleLocation.from_json(vl.merge({filename: k})).save!
+      end
+      client.destroy k
+    end
   end
 
   def read_from_dropbox
