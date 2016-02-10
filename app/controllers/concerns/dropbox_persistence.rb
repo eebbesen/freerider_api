@@ -52,7 +52,7 @@ module DropboxPersistence
         VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
       end
       Rails.logger.info "Delete file? #{ENV['NO_DELETE_DB_FILE']}."
-      client.destroy new_filename unless ENV['NO_DELETE_DB_FILE'] == '1'
+      client.file_delete new_filename unless ENV['NO_DELETE_DB_FILE'] == '1'
     end
     Rails.logger.info "Attempting to save cursor #{cursor}"
     DropboxMetadata.new(cursor: cursor, created_at: Time.now).save
