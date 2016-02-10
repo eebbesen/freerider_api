@@ -47,7 +47,7 @@ class TestDropboxClient < DropboxClient
     '[{"address"=>"W 4th St 90, 55102 Saint Paul", "coordinates"=>[-93.097112, 44.944025, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>36, "interior"=>"GOOD", "name"=>"AB5102", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME000"}, {"address"=>"Marshal Ave 1831, 55104 Saint Paul", "coordinates"=>[-93.177645, 44.949533, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>66, "interior"=>"GOOD", "name"=>"AB5104", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME001"}, {"address"=>"Ford Pkway 1974, 55116 Saint Paul", "coordinates"=>[-93.183036, 44.917769, 0], "engineType"=>"CE", "exterior"=>"GOOD", "fuel"=>18, "interior"=>"GOOD", "name"=>"AB7740", "smartPhoneRequired"=>false, "vin"=>"HAPPYGOFUNTIME002"}]'
   end
 
-  def destroy(_filename)
+  def file_delete(_filename)
     destroyed_files << _filename
   end
 end
@@ -117,14 +117,6 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
     assert_equal Array, data.class
     assert_equal 3, data.size
     assert_equal 'HAPPYGOFUNTIME000', data[0]['vin']
-  end
-
-  test 'should return data from multiple files' do
-    data = @dropbox_persistence.send(:read_from_dropbox)
-
-    assert_equal 2, data.keys.size
-    assert_equal 'amsterdam-20160103_222646', data.keys[0]
-    assert_equal 'arlingtoncounty-20160103_222649', data.keys[1]
   end
 
   test 'should persist new cursor value' do

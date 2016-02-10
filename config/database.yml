@@ -21,5 +21,10 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: postgresql
+  endcoding: unicode
+  database: prod_fr_api
+  pool: 5
+  username: frapi
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host: localhost

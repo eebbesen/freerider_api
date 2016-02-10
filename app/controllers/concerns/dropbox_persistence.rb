@@ -12,13 +12,7 @@ module DropboxPersistence
   end
 
   def save_from_dropbox
-    read_from_dropbox.each do |k, v|
-      v.each do |vl|
-        VehicleLocation.from_json(vl.merge({filename: k})).save!
-      end
-      Rails.logger.info "Delete file? #{ENV['NO_DELETE_DB_FILE']}."
-      client.destroy k unless ENV['NO_DELETE_DB_FILE'] == '1'
-    end
+    read_from_dropbox
   end
 
   def cursor
@@ -53,12 +47,15 @@ module DropboxPersistence
   end
 
   def read_from_dropbox
-    file_data = new_files.inject({}) do |data, new_filename|
-      data.merge(new_filename => get_file_data(new_filename))
+    new_files.each do |new_filename|
+      get_file_data(new_filename).each do |vl|
+        VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
+      end
+      Rails.logger.info (ENV['NO_DELETE_DB_FILE'] ? 'NOT ' : '') + "Deleting file #{new_filename}."
+      client.file_delete new_filename unless ENV['NO_DELETE_DB_FILE'] == '1'
     end
     Rails.logger.info "Attempting to save cursor #{cursor}"
     DropboxMetadata.new(cursor: cursor, created_at: Time.now).save
-    file_data
   end
 
   # <city_name>-<timestamp>
