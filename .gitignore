@@ -37,3 +37,5 @@ bower.json
 
 # For CircleCI
 test/reports
+
+.byebug_history
