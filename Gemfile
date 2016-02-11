@@ -15,10 +15,10 @@ end
 # should be in dev/test but problems when not
 gem 'spring'
 
-gem 'minitest-ci', :git => 'git@github.com:circleci/minitest-ci.git'
+# gem 'minitest-ci', :git => 'git@github.com:circleci/minitest-ci.git'
 
 # dev/test
-
+gem 'tzinfo-data'
 gem 'shoulda', group: :test
 
 group :test, :development do
