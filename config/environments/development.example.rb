@@ -42,6 +42,7 @@ Rails.application.configure do
   # ENV['REDISTOGO_URL'] = 'redis://localhost:6379/0'
   ENV['NEW_RELIC_LICENSE_KEY'] = 'your_newrelic_license_key'
   ENV['POSTGRES_PASSWORD'] = 'your_db_password'
+  ENV['MIXPANEL_TOKEN'] = 'your_mixpanel_token'
 
   # dropbox
   config.dropbox_token = ENV['DROPBOX_CLIENT_ACCESS_TOKEN']

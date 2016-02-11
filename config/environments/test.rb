@@ -43,4 +43,5 @@ Rails.application.configure do
   config.dropbox_token = 'noket'
   config.dropbox_key = 'yek'
   config.dropbox_secret = 'terces'
+  ENV['MIXPANEL_TOKEN'] = 'lenapxim'
 end

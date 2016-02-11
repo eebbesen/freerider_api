@@ -7,6 +7,7 @@ gem 'caruby2go'
 gem 'pg'
 gem 'dropbox-sdk'
 # gem 'sidekiq'
+gem 'mixpanel-ruby'
 
 group :production do
   gem 'newrelic_rpm'

@@ -1,5 +1,6 @@
 require 'dropbox_sdk'
 require 'tempfile'
+require 'mixpanel-ruby'
 
 ##
 # Prep data and persist in dropbox
@@ -50,7 +51,9 @@ module DropboxPersistence
   end
 
   def read_from_dropbox
+    mp_tracker = Mixpanel::Tracker.new ENV['MIXPANEL_TOKEN']
     new_files.each do |new_filename|
+      mp_tracker.track "#{new_filename}", 'Start parsing' 
       VehicleLocation.transaction do
         get_file_data(new_filename).each do |vl|
           VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
