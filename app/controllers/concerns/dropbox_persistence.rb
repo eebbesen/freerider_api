@@ -15,10 +15,6 @@ module DropboxPersistence
     read_from_dropbox
   end
 
-  def cursor
-    @cursor ||= DropboxMetadata.last ? DropboxMetadata.last.cursor : ''
-  end
-
   private
 
   def file(data)
@@ -32,11 +28,10 @@ module DropboxPersistence
   end
 
   def new_files
-    delta = client.delta cursor
+    delta = client.delta
     filenames = delta['entries'].each.map do |record|
       record[0].gsub(%r{^/}, '')
     end
-    @cursor = delta['cursor']
     filenames
   end
 
@@ -45,23 +40,28 @@ module DropboxPersistence
     file = client.get_file filename
     data = file.gsub(%r{=>}, ':')
     ActiveSupport::JSON.decode(data)
-  # capture only DropboxError?
-  rescue => e
-    Rails.logger.warn "get_file_data for #{filename} failed after #{DateTime.now.to_time - start.to_time} seconds with #{e.message}.  Resetting client and retrying..."
-    @client = nil
-    retry
+  rescue DropboxError => e
+    Rails.logger.warn "get_file_data for #{filename} failed after #{DateTime.now.to_time - start.to_time} seconds with #{e.class}:\n #{e.message}\n"
+    unless e.message =~ /^File has been deleted/
+      @client = nil
+      retry
+    end
+    []
   end
 
   def read_from_dropbox
     new_files.each do |new_filename|
-      get_file_data(new_filename).each do |vl|
-        VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
+      VehicleLocation.transaction do
+        get_file_data(new_filename).each do |vl|
+          VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
+        end
       end
-      Rails.logger.info (ENV['NO_DELETE_DB_FILE'] ? 'NOT ' : '') + "Deleting file #{new_filename}."
-      client.file_delete new_filename unless ENV['NO_DELETE_DB_FILE'] == '1'
+      begin
+        client.file_delete new_filename
+      rescue DropboxError => e
+        Rails.logger.warn "#{e.class}:\n#{e.message}"
+      end
     end
-    Rails.logger.info "Attempting to save cursor #{cursor}"
-    DropboxMetadata.new(cursor: cursor, created_at: Time.now).save
   end
 
   # <city_name>-<timestamp>
