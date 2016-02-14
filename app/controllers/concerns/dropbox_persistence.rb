@@ -44,6 +44,9 @@ module DropboxPersistence
     file = client.get_file filename
     data = file.gsub(%r{=>}, ':')
     ActiveSupport::JSON.decode(data)
+  rescue
+    @client = nil
+    retry
   end
 
   def read_from_dropbox
