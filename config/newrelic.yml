@@ -47,3 +47,5 @@ staging:
 
 production:
   <<: *default_settings
+  agent_enabled: true
+  monitor_mode: true
