@@ -53,7 +53,7 @@ module DropboxPersistence
   def read_from_dropbox
     mp_tracker = Mixpanel::Tracker.new ENV['MIXPANEL_TOKEN']
     new_files.each do |new_filename|
-      mp_tracker.track "#{new_filename}", 'Start parsing' 
+      mp_tracker.track '1', "Start parsing #{new_filename}"  
       VehicleLocation.transaction do
         get_file_data(new_filename).each do |vl|
           VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
