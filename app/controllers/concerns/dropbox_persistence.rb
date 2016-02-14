@@ -52,9 +52,12 @@ module DropboxPersistence
   def read_from_dropbox
     new_files.each do |new_filename|
       VehicleLocation.transaction do
+        count = 0
         get_file_data(new_filename).each do |vl|
           VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
+          count = count + 1
         end
+        Rails.logger.info "Processed #{count} records for #{new_filename}"
       end
       begin
         client.file_delete new_filename

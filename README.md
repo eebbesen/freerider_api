@@ -53,7 +53,7 @@ Or for just one city
 `rake poll_and_persist_vehicles['twincities']`
 
 ### `consume_dropbox_data`
-This task persists Dropbox file data into a local database and (by default) deletes processed files from Dropbox
+This task persists Dropbox file data into a local database and deletes processed files from Dropbox
 `RAILS_ENV=production bundle exec rake consume_dropbox_data`
 
 ## `locations`
