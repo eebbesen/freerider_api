@@ -56,10 +56,6 @@ Or for just one city
 This task persists Dropbox file data into a local database and (by default) deletes processed files from Dropbox
 `RAILS_ENV=production bundle exec rake consume_dropbox_data`
 
-If you wish _not_ to delete files from Dropbox
-
-`export NO_DELETE_DB_FILE='1'`
-
 ## `locations`
 This task returns the URI-ready city names where Car2Go operates
 
