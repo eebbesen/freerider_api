@@ -41,9 +41,15 @@ module DropboxPersistence
   end
 
   def get_file_data(filename)
+    start = DateTime.now
     file = client.get_file filename
     data = file.gsub(%r{=>}, ':')
     ActiveSupport::JSON.decode(data)
+  # capture only DropboxError?
+  rescue => e
+    Rails.logger.warn "get_file_data for #{filename} failed after #{DateTime.now.to_time - start.to_time} seconds with #{e.message}.  Resetting client and retrying..."
+    @client = nil
+    retry
   end
 
   def read_from_dropbox
