@@ -25,6 +25,7 @@ module DropboxPersistence
 
   def save_file(data)
     client.put_file(filename, file(data))
+    Rails.logger.info "#{filename} saved to Dropbox"
   end
 
   def new_files
