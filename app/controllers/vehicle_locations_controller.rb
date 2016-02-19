@@ -48,6 +48,7 @@ class VehicleLocationsController < ApplicationController
     head :no_content
   end
 
+  # saves each VehicleLocation to a database
   def poll_and_persist(location = 'twincities')
     records_persisted = 0
     poll(location).each do |record|
@@ -66,14 +67,15 @@ class VehicleLocationsController < ApplicationController
     records_persisted
   end
 
+  # saves JSON for location to a file on Dropbox
   def poll_and_dropbox(location = 'twincities')
+    @city = location
     save_to_dropbox poll(location)
   end
 
   # return valid locations encoded and de-spaced for valid calls
   def valid_locations
-    caruby2go = Caruby2go.new(ENV['CONSUMER_KEY'])
-    locations = caruby2go.locations.collect do |loc|
+    locations = caruby2go_client.locations.collect do |loc|
       URI.escape(loc['locationName'].gsub(/\s+/, ''))
     end
     locations.sort
@@ -82,9 +84,7 @@ class VehicleLocationsController < ApplicationController
   private
 
   def poll(location = 'twincities')
-    @city = location
-    caruby2go = Caruby2go.new(ENV['CONSUMER_KEY'], @city)
-    caruby2go.vehicles
+    caruby2go_client(location).vehicles
   end
 
   def set_vehicle_location
@@ -99,5 +99,27 @@ class VehicleLocationsController < ApplicationController
                                              :vin,
                                              :exterior,
                                              :interior)
+  end
+
+  def caruby2go_client(location = nil)
+    ENV['RUNSCOPE_KEY'] ? Caruby2go.new(ENV['CONSUMER_KEY'], location, "https://www-car2go-com-#{RUNSCOPE_KEY}.runscope.net/api/v2.1") : Caruby2go.new(ENV['CONSUMER_KEY'], location)
+  end
+
+  def filename_prefix
+    @city || 'no_location'
+  end
+
+  def save_from_dropbox
+    new_filenames.each do |new_filename|
+      VehicleLocation.transaction do
+        count = 0
+        get_file_data(new_filename).each do |vl|
+          VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
+          count = count + 1
+        end
+        Rails.logger.info "Processed #{count} records for #{new_filename}"
+      end
+      delete_from_dropbox new_filename
+    end
   end
 end

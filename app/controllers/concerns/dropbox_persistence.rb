@@ -11,24 +11,33 @@ module DropboxPersistence
     save_file data
   end
 
-  def save_from_dropbox
-    read_from_dropbox
+  def delete_from_dropbox(filename)
+    begin
+      client.file_delete filename
+    rescue DropboxError => e
+      Rails.logger.warn "#{e.class}:\n#{e.message}"
+    end
   end
 
   private
 
+  def save_file(data)
+    fn = generate_filename
+    client.put_file(fn, file(data))
+    Rails.logger.info "#{fn} saved to Dropbox"
+  end
+
+  def generate_filename
+    "#{filename_prefix.downcase.gsub(/\s+/, '')}-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
+  end
+
   def file(data)
-    file = Tempfile.new filename
+    file = Tempfile.new ''
     file.write data
     file
   end
 
-  def save_file(data)
-    client.put_file(filename, file(data))
-    Rails.logger.info "#{filename} saved to Dropbox"
-  end
-
-  def new_files
+  def new_filenames
     delta = client.delta
     filenames = delta['entries'].each.map do |record|
       record[0].gsub(%r{^/}, '')
@@ -50,34 +59,11 @@ module DropboxPersistence
     []
   end
 
-  def read_from_dropbox
-    new_files.each do |new_filename|
-      VehicleLocation.transaction do
-        count = 0
-        get_file_data(new_filename).each do |vl|
-          VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
-          count = count + 1
-        end
-        Rails.logger.info "Processed #{count} records for #{new_filename}"
-      end
-      begin
-        client.file_delete new_filename
-      rescue DropboxError => e
-        Rails.logger.warn "#{e.class}:\n#{e.message}"
-      end
-    end
-  end
-
-  # <city_name>-<timestamp>
-  def filename
-    "#{city.downcase.gsub(/\s+/, '')}-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
-  end
-
   def client
     @client ||= DropboxClient.new(Rails.application.config.dropbox_token)
   end
 
-  def city
-    @city
+  def filename_prefix
+    @filename_prefix ||= 'default_filename_prefix'
   end
 end
