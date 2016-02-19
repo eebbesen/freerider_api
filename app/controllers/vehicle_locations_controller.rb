@@ -102,7 +102,7 @@ class VehicleLocationsController < ApplicationController
   end
 
   def caruby2go_client(location = nil)
-    ENV['RUNSCOPE_KEY'] ? Caruby2go.new(ENV['CONSUMER_KEY'], location, "https://www-car2go-com-#{RUNSCOPE_KEY}.runscope.net/api/v2.1") : Caruby2go.new(ENV['CONSUMER_KEY'], location)
+    ENV['RUNSCOPE_KEY'] ? Caruby2go.new(ENV['CONSUMER_KEY'], location, "https://www-car2go-com-#{ENV['RUNSCOPE_KEY']}.runscope.net/api/v2.1") : Caruby2go.new(ENV['CONSUMER_KEY'], location)
   end
 
   def filename_prefix
