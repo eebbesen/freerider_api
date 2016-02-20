@@ -17,7 +17,7 @@ end
 
 class VehicleLocationsControllerTest < ActionController::TestCase
   setup do
-    @vehicle_location = vehicle_locations(:vehicle_one)
+    @vehicle_location = vehicle_locations(:one)
     @mock_caruby2go = MiniTest::Mock.new
     @mock_dropbox_client = MiniTest::Mock.new
     @vehicle_locations_controller = VehicleLocationsController.new
@@ -28,6 +28,27 @@ class VehicleLocationsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:vehicle_locations)
+    assert_equal 3, assigns(:vehicle_locations).count
+  end
+
+  test 'should get index with location scope' do
+    get :index, { location: 'amsterdam' }
+    assert_response :success
+    assert_equal 1, assigns(:vehicle_locations).count
+  end
+
+  test 'should get index with interior and location scope' do
+    get :index, { location: 'twincities', interior: 'good' }
+    assert_response :success
+    assert_equal 1, assigns(:vehicle_locations).count
+    assert_equal 'BBB111', assigns(:vehicle_locations).first.vehicle
+  end
+
+  test 'should get index with exterior and location scope' do
+    get :index, { location: 'amsterdam', exterior: 'unacceptable' }
+    assert_response :success
+    assert_equal 1, assigns(:vehicle_locations).count
+    assert_equal 'A-ZZZ-00', assigns(:vehicle_locations).first.vehicle
   end
 
   test 'should show vehicle_location' do

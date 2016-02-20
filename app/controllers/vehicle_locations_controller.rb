@@ -6,7 +6,10 @@ class VehicleLocationsController < ApplicationController
   # GET /vehicle_locations
   # GET /vehicle_locations.json
   def index
-    @vehicle_locations = VehicleLocation.all
+    @vehicle_locations = VehicleLocation.where(nil)
+    @vehicle_locations = @vehicle_locations.location(params[:location]) if params[:location].present?
+    @vehicle_locations = @vehicle_locations.interior(params[:interior]) if params[:interior].present?
+    @vehicle_locations = @vehicle_locations.exterior(params[:exterior]) if params[:exterior].present?
 
     render json: @vehicle_locations
   end

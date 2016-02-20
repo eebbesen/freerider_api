@@ -1,6 +1,10 @@
 class VehicleLocation < ActiveRecord::Base
   validates_presence_of :vehicle, :latitude, :longitude, :location, :vin
 
+  scope :location, -> (location) { where location: location.downcase }
+  scope :exterior, -> (exterior) { where exterior: exterior.upcase }
+  scope :interior, -> (interior) { where interior: interior.upcase }
+
   def self.from_json(args)
     args = args.with_indifferent_access
     VehicleLocation.new do |vl|
