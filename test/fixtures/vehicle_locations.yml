@@ -1,4 +1,4 @@
-vehicle_one: 
+one: 
   vehicle: AAA000
   latitude: 44.956706
   longitude: -93.166822
@@ -6,9 +6,9 @@ vehicle_one:
   vin: ABCD0000000000001
   exterior: GOOD
   interior: UNACCEPTABLE
-  filename: amsterdam-20160101_010116
+  filename: twincities-20160101_010116
 
-vehicle_two:
+two:
   vehicle: BBB111
   latitude: 44.939763
   longitude: -93.168729
@@ -16,4 +16,14 @@ vehicle_two:
   vin: ABCD0000000000001
   exterior: GOOD
   interior: GOOD
-  filename: amsterdam-20160104_010406
+  filename: twincities-20160104_010406
+
+three:
+  vehicle: A-ZZZ-00
+  latitude: 52.364086
+  longitude: 4.881281
+  location: amsterdam
+  vin: WME0000000K000000
+  exterior: UNACCEPTABLE
+  interior: GOOD
+  filename: amsterdam-20160204_010406
