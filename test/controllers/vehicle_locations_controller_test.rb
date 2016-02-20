@@ -32,7 +32,7 @@ class VehicleLocationsControllerTest < ActionController::TestCase
   end
 
   test 'should get index with location scope' do
-    get :index, { location: 'amsterdam' }
+    get :index, location: 'amsterdam'
     assert_response :success
     assert_equal 1, assigns(:vehicle_locations).count
   end
