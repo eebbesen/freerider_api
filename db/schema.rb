@@ -11,26 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160206234946) do
-
-  create_table "dropbox_metadata", force: :cascade do |t|
-    t.string   "cursor",     null: false
-    t.datetime "created_at", null: false
+ActiveRecord::Schema.define(version: 20_160_206_234_946) do
+  create_table 'dropbox_metadata', force: :cascade do |t|
+    t.string   'cursor',     null: false
+    t.datetime 'created_at', null: false
   end
 
-  create_table "vehicle_locations", force: :cascade do |t|
-    t.string   "vehicle",    null: false
-    t.float    "longitude",  null: false
-    t.float    "latitude",   null: false
-    t.datetime "created_at", null: false
-    t.string   "location"
-    t.string   "exterior"
-    t.string   "interior"
-    t.string   "vin"
-    t.string   "filename"
+  create_table 'vehicle_locations', force: :cascade do |t|
+    t.string   'vehicle',    null: false
+    t.float    'longitude',  null: false
+    t.float    'latitude',   null: false
+    t.datetime 'created_at', null: false
+    t.string   'location'
+    t.string   'exterior'
+    t.string   'interior'
+    t.string   'vin'
+    t.string   'filename'
   end
 
-  add_index "vehicle_locations", ["vehicle"], name: "index_vehicle_locations_on_vehicle"
-  add_index "vehicle_locations", ["vin"], name: "index_vehicle_locations_on_vin"
-
+  add_index 'vehicle_locations', ['vehicle'], name: 'index_vehicle_locations_on_vehicle'
+  add_index 'vehicle_locations', ['vin'], name: 'index_vehicle_locations_on_vin'
 end

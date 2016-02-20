@@ -86,8 +86,8 @@ class VehicleLocationsController < ApplicationController
       VehicleLocation.transaction do
         count = 0
         get_file_data(new_filename).each do |vl|
-          VehicleLocation.from_json(vl.merge({filename: new_filename})).save!
-          count = count + 1
+          VehicleLocation.from_json(vl.merge(filename: new_filename)).save!
+          count += 1
         end
         Rails.logger.info "Processed #{count} records for #{new_filename}"
       end

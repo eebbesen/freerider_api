@@ -22,7 +22,7 @@ task :poll_and_dropbox_vehicles, [:loc] => :environment do |_t, args|
 end
 
 desc 'Parse Dropbox file data, persist to database and delete file from Dropbox'
-task consume_dropbox_data: :environment do |_t, args|
+task consume_dropbox_data: :environment do
   vlc = VehicleLocationsController.new
   vlc.save_from_dropbox
 end
