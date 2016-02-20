@@ -17,7 +17,7 @@ end
 
 class VehicleLocationsControllerTest < ActionController::TestCase
   setup do
-    @vehicle_location = vehicle_locations(:vehicle_one)
+    @vehicle_location = vehicle_locations(:one)
     @mock_caruby2go = MiniTest::Mock.new
     @mock_dropbox_client = MiniTest::Mock.new
     @vehicle_locations_controller = VehicleLocationsController.new
@@ -28,43 +28,32 @@ class VehicleLocationsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:vehicle_locations)
+    assert_equal 3, assigns(:vehicle_locations).count
   end
 
-  test 'should create vehicle_location' do
-    assert_difference('VehicleLocation.count') do
-      post :create, vehicle_location: { vehicle: 'CCC333', latitude: 1, longitude: -2.3456789, location: 'twincities', vin: 'ABCD0000000000001' }
-    end
-
-    assert_response 201
+  test 'should get index with location scope' do
+    get :index, location: 'amsterdam'
+    assert_response :success
+    assert_equal 1, assigns(:vehicle_locations).count
   end
 
-  test 'fail on create' do
-    post :create, vehicle_location: { vehicle: nil }
-    assert_response :unprocessable_entity
+  test 'should get index with interior and location scope' do
+    get :index, { location: 'twincities', interior: 'good' }
+    assert_response :success
+    assert_equal 1, assigns(:vehicle_locations).count
+    assert_equal 'BBB111', assigns(:vehicle_locations).first.vehicle
+  end
+
+  test 'should get index with exterior and location scope' do
+    get :index, { location: 'amsterdam', exterior: 'unacceptable' }
+    assert_response :success
+    assert_equal 1, assigns(:vehicle_locations).count
+    assert_equal 'A-ZZZ-00', assigns(:vehicle_locations).first.vehicle
   end
 
   test 'should show vehicle_location' do
     get :show, id: @vehicle_location
     assert_response :success
-  end
-
-  test 'should update vehicle_location' do
-    put :update, id: @vehicle_location, vehicle_location: { vehicle: 'AAA000', latitude: 3, longitude: -2.3456789, location: 'twincities', vin: 'ABCD0000000000001' }
-    assert_response 204
-    assert_equal(3, VehicleLocation.find_by_id(@vehicle_location).latitude)
-  end
-
-  test 'fail on update' do
-    patch :update, id: @vehicle_location, vehicle_location: { vehicle: nil }
-    assert_response :unprocessable_entity
-  end
-
-  test 'should destroy vehicle_location' do
-    assert_difference('VehicleLocation.count', -1) do
-      delete :destroy, id: @vehicle_location
-    end
-
-    assert_response 204
   end
 
   test 'should query car2go and persist records' do
