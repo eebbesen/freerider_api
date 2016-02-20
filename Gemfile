@@ -15,7 +15,7 @@ end
 # should be in dev/test but problems when not
 gem 'spring'
 
-gem 'minitest-ci', :git => 'https://github.com/circleci/minitest-ci.git'
+gem 'minitest-ci', git: 'https://github.com/circleci/minitest-ci.git'
 
 # dev/test
 gem 'tzinfo-data'

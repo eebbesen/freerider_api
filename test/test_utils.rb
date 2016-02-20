@@ -1,6 +1,5 @@
 class TestUtils
-
-  # Given a *test* value (key, etc.) 
+  # Given a *test* value (key, etc.)
   # generate another test value by `next`ing each character
   def self.nextify_string(input)
     input.split('').inject('') do |string, character|

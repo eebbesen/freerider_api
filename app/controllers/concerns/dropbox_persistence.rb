@@ -12,11 +12,9 @@ module DropboxPersistence
   end
 
   def delete_from_dropbox(filename)
-    begin
-      client.file_delete filename
-    rescue DropboxError => e
-      Rails.logger.warn "#{e.class}:\n#{e.message}"
-    end
+    client.file_delete filename
+  rescue DropboxError => e
+    Rails.logger.warn "#{e.class}:\n#{e.message}"
   end
 
   private
@@ -48,7 +46,7 @@ module DropboxPersistence
   def get_file_data(filename)
     start = DateTime.now
     file = client.get_file filename
-    data = file.gsub(%r{=>}, ':')
+    data = file.gsub(/=>/, ':')
     ActiveSupport::JSON.decode(data)
   rescue DropboxError, Errno::ETIMEDOUT => e
     Rails.logger.warn "get_file_data for #{filename} failed after #{DateTime.now.to_time - start.to_time} seconds with #{e.class}:\n #{e.message}\n"
