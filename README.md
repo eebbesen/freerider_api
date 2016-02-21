@@ -55,6 +55,8 @@ Or for just one city
 ### `consume_dropbox_data`
 This task persists Dropbox file data into a local database and deletes processed files from Dropbox
 `RAILS_ENV=production bundle exec rake consume_dropbox_data`
+I `cron` it:
+`42 * * * * /bin/bash -l -c 'cd /home/username/projects/freerider_api && rvm use ruby-2.2.2 && bundle install &&         RAILS_ENV=production bundle exec rake consume_dropbox_data'`
 
 ## `locations`
 This task returns the URI-ready city names where Car2Go operates
