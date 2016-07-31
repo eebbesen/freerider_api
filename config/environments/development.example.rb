@@ -43,10 +43,7 @@ Rails.application.configure do
   ENV['NEW_RELIC_LICENSE_KEY'] = 'your_newrelic_license_key'
   ENV['POSTGRES_PASSWORD'] = 'your_db_password'
   ENV['RUNSCOPE_KEY'] = 'your_runscape_key'
-  ENV['DROPBOX_CLIENT_ACCESS_TOKEN'] = 'your_dropbox_client_access_token'
 
   # dropbox
   config.dropbox_token = ENV['DROPBOX_CLIENT_ACCESS_TOKEN']
-  config.dropbox_key = ENV['DROPBOX_APP_KEY']
-  config.dropbox_secret = ENV['DROPBOX_APP_SECRET']
 end

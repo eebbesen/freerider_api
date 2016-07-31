@@ -78,6 +78,4 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.dropbox_token = ENV['DROPBOX_CLIENT_ACCESS_TOKEN']
-  config.dropbox_key = ENV['DROPBOX_APP_KEY']
-  config.dropbox_secret = ENV['DROPBOX_APP_SECRET']
 end

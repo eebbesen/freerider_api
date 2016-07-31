@@ -4,7 +4,7 @@ class VehicleLocation < ActiveRecord::Base
   scope :location,  -> (location) { where location: location.downcase }
   scope :exterior,  -> (exterior) { where exterior: exterior.upcase }
   scope :interior,  -> (interior) { where interior: interior.upcase }
-  scope :last_days, -> (days) { where(["created_at > ?",  Time.now - days.days]) }
+  scope :last_days, -> (days) { where(['created_at > ?',  Time.now - days.days]) }
 
   def self.from_json(args)
     args = args.with_indifferent_access
