@@ -7,10 +7,6 @@ class VehicleLocationTest < ActiveSupport::TestCase
   should validate_presence_of :location
   should validate_presence_of :vin
 
-  # setup do
-  #   @vehicle_location = VehicleLocation.new
-  # end
-
   test 'respect location scope' do
     locations = VehicleLocation.where(nil).location('amsterdam')
     assert_equal 1, locations.count
@@ -44,5 +40,22 @@ class VehicleLocationTest < ActiveSupport::TestCase
              'vin': 'HAPPYGOFUNTIME000' }
 
     VehicleLocation.from_json(json)
+  end
+
+  test 'last days scope all included' do
+    vs = VehicleLocation.last_days 2
+    assert_equal 3, vs.count
+  end
+
+  test 'last days scope one excluded' do
+    VehicleLocation.first.update_attribute(:created_at, Time.now - 3.days)
+    vs = VehicleLocation.last_days 2
+    assert_equal 2, vs.count
+  end
+
+  test 'last days scope all excluded' do
+    VehicleLocation.all.map{|m| m.update_attribute(:created_at, Time.now - 3.days)}
+    vs = VehicleLocation.last_days 2
+    assert_equal 0, vs.count
   end
 end
