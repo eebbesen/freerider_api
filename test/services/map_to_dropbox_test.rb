@@ -24,7 +24,7 @@ class MapToDropboxTest < ActiveSupport::TestCase
   end
 
   test 'should persist a file in Dropbox' do
-    filename = "amsterdam-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
+    filename = "amsterdam-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}.csv"
 
     @dropbox_persistence.send_map VehicleLocation.all
 

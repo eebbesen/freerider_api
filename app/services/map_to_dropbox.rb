@@ -28,7 +28,7 @@ class MapToDropbox
 
   def generate_filename(file)
     city = file.path.split('/').last.split('-').first
-    "#{city}-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
+    "#{city}-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}.csv"
   end
 
   def filename_prefix
