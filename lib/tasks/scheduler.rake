@@ -32,3 +32,10 @@ task locations: :environment do
   vlc = VehicleLocationsController.new
   puts vlc.valid_locations
 end
+
+desc 'Create a map for a location'
+task :create_map, [:loc] => :environment do |_t, args|
+  vls = VehicleLocation.last_days(5).location(args[:loc])
+  MapToDropbox.new.send_map vls
+  puts "put a file with #{vls.count} records"
+end

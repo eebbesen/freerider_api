@@ -58,7 +58,7 @@ module DropboxPersistence
   end
 
   def client
-    @client ||= DropboxClient.new(Rails.application.config.dropbox_token)
+    @client ||= DropboxClient.new(Rails.application.config.dropbox_data_token)
   end
 
   def filename_prefix

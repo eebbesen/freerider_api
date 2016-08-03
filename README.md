@@ -62,3 +62,8 @@ I `cron` it:
 This task returns the URI-ready city names where Car2Go operates
 
 `rake locations`
+
+### `create_map`
+This task will take the last five days' location data for a given city and create a CSV of the data in Dropbox
+
+`rake create_map['twincities']`

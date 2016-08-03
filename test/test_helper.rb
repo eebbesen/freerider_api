@@ -10,6 +10,8 @@ SimpleCov.start 'rails'
 require 'minitest/reporters'
 Minitest::Reporters.use!
 
+require File.expand_path('../helpers/test_dropbox_client', __FILE__)
+
 # save to CircleCI's artifacts directory if we're on CircleCI
 if ENV['CIRCLE_ARTIFACTS']
   dir = File.join(ENV['CIRCLE_ARTIFACTS'], 'coverage')
