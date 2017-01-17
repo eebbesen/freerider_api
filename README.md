@@ -62,9 +62,13 @@ Or for just one city
 
 ### `consume_dropbox_data`
 This task persists Dropbox file data into a local database and deletes processed files from Dropbox
-`RAILS_ENV=production bundle exec rake consume_dropbox_data`
+
+    RAILS_ENV=production bundle exec rake consume_dropbox_data
+
 I `cron` it:
-`42 * * * * /bin/bash -l -c 'cd /home/username/projects/freerider_api && rvm use ruby-2.2.2 && bundle install &&         RAILS_ENV=production bundle exec rake consume_dropbox_data'`
+
+    42 * * * * /bin/bash -l -c 'cd /home/username/projects/freerider_api && rvm use ruby-2.2.2 && bundle install \
+    && RAILS_ENV=production bundle exec rake consume_dropbox_data'
 
 ### `converter:add_vehicle_location_time`
 The filename column gives you an idea of when a vehicle location was recorded, but that doesn't work in the context of tools like Carto.  This task adds a timestamp on the end of each row in a new CSV it creates from the one you pass in
