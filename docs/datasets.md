@@ -1,6 +1,10 @@
+# Car2Gone
+Developed specifically to help visualize the pull out of vehicles when Car2Go discontinues service in an area.
 
-## Export data from PostgreSQL
-1. Export to csv from PostgreSQL
+Note that times are by default in UTC.
+
+### Export to CSV from PostgreSQL
+PostgreSQL commands that will create CSVs of the query results.
 ```
     \copy (select * from vehicle_locations where location = 'twincities' and created_at > '2016-11-16') TO '~/tc_locs_since_nov_16_16_ex.csv' CSV HEADER
 
@@ -12,22 +16,16 @@
 
     \copy (select * from vehicle_locations where location = 'stockholm' and created_at > '2016-11-01') TO '~/sh_locs_since_nov_01_16_ex.csv' CSV HEADER
 ```
-1. Group by filename since created at is insertion time, not data time (if using an older version of Freerider API)
+
+### Group by filename since created at is insertion time, not data time (if using an older version of Freerider API)
+Queries that will generate car counts per day or per hour.
 ```
-    select count(*), date_trunc('day', created_at)
-      from vehicle_locations
-     where location = 'twincities' 
-       and created_at > '2016-11-15'
-    group by date_trunc('day', created_at)
-    order by date_trunc('day', created_at);
-
-
-    select count(*), substr(filename, 0, 20)
+    select count(*), substr(filename, 0, 23)
       from vehicle_locations
      where location = 'twincities' 
        and created_at > '2016-12-01'
-    group by substr(filename, 0, 20)
-    order by substr(filename, 0, 20);
+    group by substr(filename, 0, 23)
+    order by substr(filename, 0, 23);
 
     select count(*), filename
       from vehicle_locations

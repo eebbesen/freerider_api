@@ -8,13 +8,15 @@ This project will read vehicle location data from Car2Go and persist it to
 
 This project will read Car2Go vehicle location data from a Dropbox file and persist it to a relational database like PostgreSQL.
 
-The reason for offering Dropbox as an intermediary is to allow me to avoid paying for a hosted PostgreSQL instance.
+The reason for offering Dropbox as an intermediary is to allow me to avoid paying for a hosted PostgreSQL instance :).
+
+Note that times are by default in UTC.
 
 ## System dependencies
 * Ruby 2.2.0
 
 ## Configuration
-I'm including Heroku and Heroku add-on information here, but you can deploy where you'd like :).
+I'm including Heroku and Heroku add-on information here, but you can deploy where you'd like.
 
 Config variables to set in deployment app or cofig/environments/development.rb
 
