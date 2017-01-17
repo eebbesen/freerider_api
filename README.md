@@ -1,8 +1,16 @@
 [![Circle CI](https://circleci.com/gh/eebbesen/freerider_api.svg?style=shield)](https://circleci.com/gh/eebbesen/freerider_api)
 
 # Freerider API
+
+This project will read vehicle location data from Car2Go and persist it to
+* a file in Dropbox
+* a relational database like PostgreSQL
+
+This project will read Car2Go vehicle location data from a Dropbox file and persist it to a relational database like PostgreSQL.
+
+The reason for offering Dropbox as an intermediary is to allow me to avoid paying for a hosted PostgreSQL instance.
+
 ## System dependencies
-* [caruby2go gem](https://github.com/eebbesen/caruby2go)
 * Ruby 2.2.0
 
 ## Configuration
@@ -57,6 +65,11 @@ This task persists Dropbox file data into a local database and deletes processed
 `RAILS_ENV=production bundle exec rake consume_dropbox_data`
 I `cron` it:
 `42 * * * * /bin/bash -l -c 'cd /home/username/projects/freerider_api && rvm use ruby-2.2.2 && bundle install &&         RAILS_ENV=production bundle exec rake consume_dropbox_data'`
+
+### `converter:add_vehicle_location_time`
+The filename column gives you an idea of when a vehicle location was recorded, but that doesn't work in the context of tools like Carto.  This task adds a timestamp on the end of each row in a new CSV it creates from the one you pass in
+
+`rake converter:add_vehicle_location_time['<csv_to_convert>']`
 
 ## `locations`
 This task returns the URI-ready city names where Car2Go operates
