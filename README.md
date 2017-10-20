@@ -22,7 +22,7 @@ Config variables to set in deployment app or cofig/environments/development.rb
 
     ENV['CONSUMER_KEY'] = '<your_car2go_consumer_key>'
     ENV['NEW_RELIC_LICENSE_KEY'] = '<your_new_relic_license_key>'
-    ENV['DROPBOX_CLIENT_ACCESS_TOKEN'] = '<your_dropbox_access_token>'
+    ENV['DROPBOX_OAUTH_BEARER'] = '<your_dropbox_access_token>'
 
 ### Database initialization
 
@@ -35,11 +35,11 @@ Config variables to set in deployment app or cofig/environments/development.rb
 
 ## Deployment instructions
 ### Heroku
-To run a rake task which will 
-* push code to Heroku 
-* run migrations on Heroku 
-* restart the application on Heroku 
-* run `poll_and_persist_vehicles['twincities']` against the Heroku instance (as a validation -- you should monitor the output) 
+To run a rake task which will
+* push code to Heroku
+* run migrations on Heroku
+* restart the application on Heroku
+* run `poll_and_persist_vehicles['twincities']` against the Heroku instance (as a validation -- you should monitor the output)
 
 `rake heroku:deploy_and_run`
 

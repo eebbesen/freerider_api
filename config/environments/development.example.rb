@@ -45,5 +45,5 @@ Rails.application.configure do
   ENV['RUNSCOPE_KEY'] = 'your_runscape_key'
 
   # dropbox
-  config.dropbox_token = ENV['DROPBOX_CLIENT_ACCESS_TOKEN']
+  config.dropbox_token = ENV['DROPBOX_OAUTH_BEARER']
 end

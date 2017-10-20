@@ -1,5 +1,4 @@
-require 'dropbox_sdk'
-require 'tempfile'
+require 'dropbox_api'
 
 ##
 # Prep data and persist in dropbox
@@ -12,27 +11,23 @@ module DropboxPersistence
   end
 
   def delete_from_dropbox(filename)
-    client.file_delete filename
-  rescue DropboxError => e
+    client.delete filename
+  rescue DropboxApi::Errors::BasicError => e
     Rails.logger.warn "#{e.class}:\n#{e.message}"
+    false
   end
 
   private
 
   def save_file(data)
     fn = generate_filename
-    client.put_file(fn, file(data))
+    client.upload(fn, data)
     Rails.logger.info "#{fn} saved to Dropbox"
+    fn
   end
 
   def generate_filename
-    "#{filename_prefix.downcase.gsub(/\s+/, '')}-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
-  end
-
-  def file(data)
-    file = Tempfile.new ''
-    file.write data
-    file
+    "/#{filename_prefix.downcase.gsub(/\s+/, '')}-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
   end
 
   def new_filenames
@@ -58,7 +53,7 @@ module DropboxPersistence
   end
 
   def client
-    @client ||= DropboxClient.new(Rails.application.config.dropbox_data_token)
+    @client ||= DropboxApi::Client.new(Rails.application.config.dropbox_data_token)
   end
 
   def filename_prefix

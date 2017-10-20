@@ -1,6 +1,5 @@
 require 'test_helper'
 require 'date'
-require 'dropbox_sdk'
 
 ##
 # Implementation of module under test
@@ -26,7 +25,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   end
 
   test 'should persist a file in Dropbox' do
-    filename = "greenbay-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
+    filename = "/greenbay-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
     tempfile = Tempfile.new filename
     tempfile.write MOCK_VEHICLES
 
@@ -46,24 +45,19 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
 
   test 'should put file in Dropbox' do
     @dropbox_persistence.send(:save_file, MOCK_VEHICLES)
-    assert_equal "greenbay-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}", @fake_dropbox_client.filename
+    assert_equal "/greenbay-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}", @fake_dropbox_client.filename
     assert_not_nil @fake_dropbox_client.file
   end
 
   test 'should create a filename in the proper format when filename_prefix not nil' do
-    assert_equal("greenbay-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}",
+    assert_equal("/greenbay-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}",
                  @dropbox_persistence.send(:generate_filename))
   end
 
   test 'should create a filename in the proper format when filename_prefix is nil' do
     @dropbox_persistence = TestDropboxPersister.new('deFAUlt_fileName_preFIX', @fake_dropbox_client)
-    assert_equal("default_filename_prefix-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}",
+    assert_equal("/default_filename_prefix-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}",
                  @dropbox_persistence.send(:generate_filename))
-  end
-
-  test 'should create a tempfile' do
-    file = @dropbox_persistence.send(:file, MOCK_VEHICLES)
-    assert_equal(MOCK_VEHICLES.to_s.size, file.size)
   end
 
   test 'should get and format new file names' do

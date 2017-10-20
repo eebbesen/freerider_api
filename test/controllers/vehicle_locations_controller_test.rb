@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'dropbox_sdk'
 require 'vehicle_locations_controller'
 
 MOCK_VEHICLES = [{ 'address' => 'Grand Ave 1600, 55104 St Paul', 'coordinates' => [-93.168740, 44.939976, 0], 'engineType' => 'CE', 'exterior' => 'GOOD', 'fuel' => 100, 'interior' => 'GOOD', 'name' => 'AAA000', 'smartPhoneRequired' => false, 'vin' => 'ABCD0000000000001' },
@@ -69,8 +68,8 @@ class VehicleLocationsControllerTest < ActionController::TestCase
   end
 
   test 'should query car2go and dropbox JSON' do
-    @mock_dropbox_client.expect(:put_file, true) do |filename, file|
-      filename =~ /^saint_paul-/ || file.class.name == 'TempFile'
+    @mock_dropbox_client.expect(:upload, true) do |filename, file|
+      filename =~ /^\/saint_paul-/ || file.class.name == 'TempFile'
     end
     @mock_caruby2go.expect(:vehicles, MOCK_VEHICLES)
     assert_difference('VehicleLocation.count', 0) do
@@ -103,7 +102,7 @@ class VehicleLocationsControllerTest < ActionController::TestCase
       @mock_dropbox_client.expect(:get_file, MOCK_VEHICLES.to_s) do |filename|
         filename =~ file_prefix
       end
-      @mock_dropbox_client.expect(:file_delete, true) do |filename|
+      @mock_dropbox_client.expect(:delete, true) do |filename|
         filename =~ file_prefix
       end
     end

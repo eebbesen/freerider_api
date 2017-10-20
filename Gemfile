@@ -5,8 +5,7 @@ gem 'rails-api'
 
 gem 'caruby2go'
 gem 'pg'
-gem 'dropbox-sdk'
-# gem 'sidekiq'
+gem 'dropbox_api'
 
 group :production do
   gem 'newrelic_rpm'
