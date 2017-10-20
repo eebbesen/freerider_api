@@ -18,7 +18,7 @@ class MapToDropbox
 
   def save_file(file)
     fn = generate_filename file
-    client.put_file(fn, file)
+    client.upload(fn, file)
     Rails.logger.info "#{fn} saved to Dropbox"
   end
 
