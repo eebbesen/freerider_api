@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dropbox_api'
 
 ##
@@ -27,7 +29,8 @@ module DropboxPersistence
   end
 
   def generate_filename
-    "/#{filename_prefix.downcase.gsub(/\s+/, '')}-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}"
+    ts = DateTime.now.strftime('%Y%m%d_%H%M%S')
+    "/#{filename_prefix.downcase.gsub(/\s+/, '')}-#{ts}"
   end
 
   def new_filenames

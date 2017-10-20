@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "#{Rails.root}/app/controllers/concerns/dropbox_persistence.rb"
 
 include DropboxPersistence
