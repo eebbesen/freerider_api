@@ -37,7 +37,7 @@ class VehicleLocationsControllerTest < ActionController::TestCase
   end
 
   test 'should get index with interior and location scope' do
-    get :index, { location: 'twincities', interior: 'good' }
+    get :index, location: 'twincities', interior: 'good'
     assert_response :success
     assert_equal 1, assigns(:vehicle_locations).count
     assert_equal 'BBB111', assigns(:vehicle_locations).first.vehicle
@@ -69,7 +69,7 @@ class VehicleLocationsControllerTest < ActionController::TestCase
 
   test 'should query car2go and dropbox JSON' do
     @mock_dropbox_client.expect(:upload, true) do |filename, file|
-      filename =~ /^\/saint_paul-/ || file.class.name == 'TempFile'
+      filename =~ %r{^/saint_paul-} || file.class.name == 'TempFile'
     end
     @mock_caruby2go.expect(:vehicles, MOCK_VEHICLES)
     assert_difference('VehicleLocation.count', 0) do
