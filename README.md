@@ -39,7 +39,7 @@ To run a rake task which will
 * push code to Heroku
 * run migrations on Heroku
 * restart the application on Heroku
-* run `poll_and_persist_vehicles['twincities']` against the Heroku instance (as a validation -- you should monitor the output)
+* run `poll_and_persist_vehicles['austin']` against the Heroku instance (as a validation -- you should monitor the output)
 
 `rake heroku:deploy_and_run`
 
@@ -51,7 +51,7 @@ This task polls for and places one file per run per city in a dropbox location.
 
 Or for just one city
 
-`rake poll_and_dropbox_vehicles['twincities']`
+`rake poll_and_dropbox_vehicles['austin']`
 
 ### `poll_and_persist_vehicles`
 This task polls for and persists the vehicle/locations for all cities into the database.
@@ -60,7 +60,7 @@ This task polls for and persists the vehicle/locations for all cities into the d
 
 Or for just one city
 
-`rake poll_and_persist_vehicles['twincities']`
+`rake poll_and_persist_vehicles['austin']`
 
 ### `consume_dropbox_data`
 This task persists Dropbox file data into a local database and deletes processed files from Dropbox
@@ -85,4 +85,4 @@ This task returns the URI-ready city names where Car2Go operates
 ### `create_map`
 This task will take the last five days' location data for a given city and create a CSV of the data in Dropbox
 
-`rake create_map['twincities']`
+`rake create_map['austin']`

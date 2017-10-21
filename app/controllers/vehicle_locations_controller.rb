@@ -1,6 +1,8 @@
 class VehicleLocationsController < ApplicationController
   include DropboxPersistence
 
+  DEFAULT_LOC = 'austin'
+
   before_action :set_vehicle_location, only: [:show]
 
   # GET /vehicle_locations
@@ -21,7 +23,7 @@ class VehicleLocationsController < ApplicationController
   end
 
   # saves each VehicleLocation to a database
-  def poll_and_persist(location = 'twincities')
+  def poll_and_persist(location = DEFAULT_LOC)
     records_persisted = 0
     poll(location).each do |record|
       # Caruby2go provides coordinates in [longitude, latitude]
@@ -40,7 +42,7 @@ class VehicleLocationsController < ApplicationController
   end
 
   # saves JSON for location to a file on Dropbox
-  def poll_and_dropbox(location = 'twincities')
+  def poll_and_dropbox(location = DEFAULT_LOC)
     @city = location
     save_to_dropbox poll(location)
   end
@@ -70,7 +72,7 @@ class VehicleLocationsController < ApplicationController
 
   private
 
-  def poll(location = 'twincities')
+  def poll(location = DEFAULT_LOC)
     caruby2go_client(location).vehicles
   end
 
