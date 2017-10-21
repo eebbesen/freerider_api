@@ -51,6 +51,18 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
     assert_not_nil @fake_dropbox_client.file
   end
 
+  test 'should handle Dropbox save issue' do
+    Client = Struct.new(:blah) do
+      def upload(_filename, _data)
+        raise RuntimeError.new 'horrible stuff'
+      end
+    end
+    @dropbox_persistence = TestDropboxPersister.new('GREeN BAY', Client.new)
+    assert_raises RuntimeError do
+      @dropbox_persistence.send(:save_file, MOCK_VEHICLES)
+    end
+  end
+
   test 'should create a filename in the proper format when filename_prefix not nil' do
     assert_equal("/greenbay-#{DateTime.now.strftime('%Y%m%d_%H%M%S')}",
                  @dropbox_persistence.send(:generate_filename))
