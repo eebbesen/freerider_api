@@ -53,7 +53,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
 
   test 'should handle Dropbox save issue' do
     Client = Struct.new(:blah) do
-      def upload(filename, data)
+      def upload(_filename, _data)
         raise RuntimeError.new 'horrible stuff'
       end
     end
