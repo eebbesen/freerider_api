@@ -43,10 +43,13 @@ module DropboxPersistence
 
   def get_file_data(filename)
     start = DateTime.now
-    file = client.get_file filename
-    data = file.gsub(/=>/, ':')
+    raw_data = ''
+    client.download(filename) do |chunk|
+      raw_data = chunk
+    end
+    data = raw_data.gsub(/=>/, ':')
     ActiveSupport::JSON.decode(data)
-  rescue DropboxError, Errno::ETIMEDOUT => e
+  rescue RuntimeError, Errno::ETIMEDOUT => e
     Rails.logger.warn "get_file_data for #{filename} failed after #{DateTime.now.to_time - start.to_time} seconds with #{e.class}:\n #{e.message}\n"
     unless e.message =~ /^File has been deleted/
       @client = nil
