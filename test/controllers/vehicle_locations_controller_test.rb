@@ -92,12 +92,8 @@ class VehicleLocationsControllerTest < ActionController::TestCase
   end
 
   test 'should persist VehicleLocations and delete files from dropbox' do
-    @mock_dropbox_client.expect(:delta,
-                                'has_more' => true,
-                                'cursor' => 'AAGD16CDqUR3_J8VkxqbtaxTLucsv8_YXhBW_qMa8-jqHU5EdR6cZ6kYAC9xA_Q5gocIcSO3GnXcZbUE9aoCSQTpDpW9Q88YyxifdVlcoAaStUuBUdj0JkavZnaQdDBhPsE',
-                                'entries' => [['/amsterdam-20160103_222646', { 'rev' => '5413a6ecb', 'thumb_exists' => false, 'path' => '/amsterdam-20160103_222646', 'is_dir' => false, 'client_mtime' => 'Mon, 04 Jan 2016 04:26:47 +0000', 'icon' => 'page_white', 'bytes' => 87_200, 'modified' => 'Mon, 04 Jan 2016 04:26:47 +0000', 'size' => '85.2 KB', 'root' => 'app_folder', 'mime_type' => 'application/octet-stream', 'revision' => 5 }], ['/arlingtoncounty-20160103_222649', { 'rev' => '6413a6ecb', 'thumb_exists' => false, 'path' => '/arlingtoncounty-20160103_222649', 'is_dir' => false, 'client_mtime' => 'Mon, 04 Jan 2016 04:26:49 +0000', 'icon' => 'page_white', 'bytes' => 19_389, 'modified' => 'Mon, 04 Jan 2016 04:26:49 +0000', 'size' => '18.9 KB', 'root' => 'app_folder', 'mime_type' => 'application/octet-stream', 'revision' => 6 }]],
-                                'reset' => true
-                               )
+    ret = TestDropboxClient.new('yek').list_folder ''
+    @mock_dropbox_client.expect(:list_folder, ret, [''])
     [/^amsterdam/, /^arlington/].each do |file_prefix|
       @mock_dropbox_client.expect(:get_file, MOCK_VEHICLES.to_s) do |filename|
         filename =~ file_prefix

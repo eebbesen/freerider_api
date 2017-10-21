@@ -34,9 +34,9 @@ module DropboxPersistence
   end
 
   def new_filenames
-    delta = client.delta
-    filenames = delta['entries'].each.map do |record|
-      record[0].gsub(%r{^/}, '')
+    delta = client.list_folder ''
+    filenames = delta.entries.each.map do |record|
+      record.name.gsub(%r{^/}, '')
     end
     filenames
   end

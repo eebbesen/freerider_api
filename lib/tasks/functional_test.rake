@@ -6,7 +6,7 @@ include DropboxPersistence
 
 namespace :dropbox_test do
   desc 'save content to dropbox then delete it'
-  task :save_delete, [:loc] => :environment do
+  task save_delete: :environment do
     f = DropboxPersistence.save_to_dropbox "test content from #{Time.now}"
     raise RuntimeException 'save error' unless f
     puts "saved #{f}"
@@ -14,5 +14,14 @@ namespace :dropbox_test do
     d = DropboxPersistence.delete_from_dropbox f
     raise RuntimeException 'deletion error' unless d.name
     puts "#{d.name} deleted"
+  end
+
+  desc 'list files'
+  task list: :environment do
+    files = DropboxPersistence.send(:new_filenames)
+    files.each do |file|
+      puts file
+    end
+    puts "there are #{files.size} files"
   end
 end
