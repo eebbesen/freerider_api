@@ -55,15 +55,16 @@ class VehicleLocationsController < ApplicationController
 
   def save_from_dropbox
     new_filenames.each do |new_filename|
+      nf = "/#{new_filename}"
       VehicleLocation.transaction do
         count = 0
-        get_file_data(new_filename).each do |vl|
+        get_file_data(nf).each do |vl|
           VehicleLocation.from_json(vl.merge(filename: new_filename)).save!
           count += 1
         end
         Rails.logger.info "Processed #{count} records for #{new_filename}"
       end
-      delete_from_dropbox new_filename
+      delete_from_dropbox nf
     end
   end
 
