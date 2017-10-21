@@ -1,7 +1,7 @@
 class VehicleLocationsController < ApplicationController
   include DropboxPersistence
 
-  DEFAULT_LOC = 'austin'
+  DEFAULT_LOC = 'austin'.freeze
 
   before_action :set_vehicle_location, only: [:show]
 
