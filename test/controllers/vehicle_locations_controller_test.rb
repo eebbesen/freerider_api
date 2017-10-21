@@ -90,23 +90,4 @@ class VehicleLocationsControllerTest < ActionController::TestCase
     assert_equal ['M%C3%BCnchen', 'TwinCities'], @locations
     assert @mock_caruby2go.verify
   end
-
-  test 'should persist VehicleLocations and delete files from dropbox' do
-    ret = TestDropboxClient.new('yek').list_folder ''
-    @mock_dropbox_client.expect(:list_folder, ret, [''])
-    [/^amsterdam/, /^arlington/].each do |file_prefix|
-      @mock_dropbox_client.expect(:get_file, MOCK_VEHICLES.to_s) do |filename|
-        filename =~ file_prefix
-      end
-      @mock_dropbox_client.expect(:delete, true) do |filename|
-        filename =~ file_prefix
-      end
-    end
-    Caruby2go.stub(:new, @mock_caruby2go) do
-      assert_difference 'VehicleLocation.count', 6 do
-        @vehicle_locations_controller.send :save_from_dropbox
-      end
-    end
-    assert @mock_dropbox_client.verify
-  end
 end

@@ -43,10 +43,7 @@ module DropboxPersistence
 
   def get_file_data(filename)
     start = DateTime.now
-    raw_data = ''
-    client.download(filename) do |chunk|
-      raw_data = chunk
-    end
+    raw_data = download filename
     data = raw_data.gsub(/=>/, ':')
     ActiveSupport::JSON.decode(data)
   rescue RuntimeError, Errno::ETIMEDOUT => e
@@ -56,6 +53,14 @@ module DropboxPersistence
       retry
     end
     []
+  end
+
+  def download(filename)
+    raw_data = ''
+    client.download(filename) do |chunk|
+      raw_data = chunk
+    end
+    raw_data
   end
 
   def client

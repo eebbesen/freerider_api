@@ -11,6 +11,8 @@ class TestDropboxPersister
     @client = client
   end
 
+  attr_writer :data
+
   attr_reader :client
 end
 
