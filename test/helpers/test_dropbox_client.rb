@@ -27,8 +27,8 @@ class TestDropboxClient
                 [File.new('/amsterdam-20160103_222646'), File.new('/arlingtoncounty-20160103_222649')])
   end
 
-  def get_file(_filename)
-    @data
+  def download(_filename)
+    yield @data
   end
 
   def delete(filename)
