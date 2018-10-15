@@ -1,4 +1,4 @@
-class AddColumnsToVehicleLocations < ActiveRecord::Migration
+class AddColumnsToVehicleLocations < ActiveRecord::Migration[5.1]
   def change
     add_column :vehicle_locations, :exterior, :string
     add_column :vehicle_locations, :interior, :string

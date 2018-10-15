@@ -1,4 +1,4 @@
-class AddWhenToVehicleLocations < ActiveRecord::Migration
+class AddWhenToVehicleLocations < ActiveRecord::Migration[5.1]
   def change
     add_column :vehicle_locations, :when, :datetime
   end

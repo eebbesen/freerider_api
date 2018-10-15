@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.4'
-gem 'rails-api'
+gem 'rails', '5.2'
+# gem 'rails-api'
 
 gem 'caruby2go'
 gem 'pg'
@@ -18,7 +18,9 @@ gem 'minitest-ci', git: 'https://github.com/circleci/minitest-ci.git'
 
 # dev/test
 gem 'tzinfo-data'
-gem 'shoulda', group: :test
+# gem 'shoulda', group: :test
+# gem 'shoulda-matchers', group: :test
+gem 'rails-controller-testing', group: :test
 
 group :test, :development do
   gem 'byebug'
@@ -26,4 +28,5 @@ group :test, :development do
   gem 'rubocop'
   gem 'simplecov'
   gem 'sqlite3'
+  gem 'bundle-audit'
 end
