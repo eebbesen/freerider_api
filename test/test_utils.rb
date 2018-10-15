@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TestUtils
   # Given a *test* value (key, etc.)
   # generate another test value by `next`ing each character

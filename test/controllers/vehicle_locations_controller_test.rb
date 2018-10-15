@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'vehicle_locations_controller'
 
@@ -31,27 +33,27 @@ class VehicleLocationsControllerTest < ActionController::TestCase
   end
 
   test 'should get index with location scope' do
-    get :index, location: 'amsterdam'
+    get :index, params: { location: 'amsterdam' }
     assert_response :success
     assert_equal 1, assigns(:vehicle_locations).count
   end
 
   test 'should get index with interior and location scope' do
-    get :index, location: 'twincities', interior: 'good'
+    get :index, params: { location: 'twincities', interior: 'good' }
     assert_response :success
     assert_equal 1, assigns(:vehicle_locations).count
     assert_equal 'BBB111', assigns(:vehicle_locations).first.vehicle
   end
 
   test 'should get index with exterior and location scope' do
-    get :index, { location: 'amsterdam', exterior: 'unacceptable' }
+    get :index, params: { location: 'amsterdam', exterior: 'unacceptable' }
     assert_response :success
     assert_equal 1, assigns(:vehicle_locations).count
     assert_equal 'A-ZZZ-00', assigns(:vehicle_locations).first.vehicle
   end
 
   test 'should show vehicle_location' do
-    get :show, id: @vehicle_location
+    get :show, params: { id: @vehicle_location }
     assert_response :success
   end
 

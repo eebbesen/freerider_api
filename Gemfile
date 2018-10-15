@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.4'
-gem 'rails-api'
+gem 'rails', '5.2'
+# gem 'rails-api'
 
 gem 'caruby2go'
-gem 'pg'
 gem 'dropbox_api'
+gem 'pg'
 
 group :production do
   gem 'newrelic_rpm'
@@ -18,9 +20,12 @@ gem 'minitest-ci', git: 'https://github.com/circleci/minitest-ci.git'
 
 # dev/test
 gem 'tzinfo-data'
-gem 'shoulda', group: :test
+# gem 'shoulda', group: :test
+# gem 'shoulda-matchers', group: :test
+gem 'rails-controller-testing', group: :test
 
 group :test, :development do
+  gem 'bundle-audit'
   gem 'byebug'
   gem 'minitest-reporters'
   gem 'rubocop'

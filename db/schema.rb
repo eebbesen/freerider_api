@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,27 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170116214430) do
+ActiveRecord::Schema.define(version: 2017_01_16_214430) do
 
   create_table "dropbox_metadata", force: :cascade do |t|
-    t.string   "cursor",     null: false
+    t.string "cursor", null: false
     t.datetime "created_at", null: false
   end
 
   create_table "vehicle_locations", force: :cascade do |t|
-    t.string   "vehicle",    null: false
-    t.float    "longitude",  null: false
-    t.float    "latitude",   null: false
+    t.string "vehicle", null: false
+    t.float "longitude", null: false
+    t.float "latitude", null: false
     t.datetime "created_at", null: false
-    t.string   "location"
-    t.string   "exterior"
-    t.string   "interior"
-    t.string   "vin"
-    t.string   "filename"
+    t.string "location"
+    t.string "exterior"
+    t.string "interior"
+    t.string "vin"
+    t.string "filename"
     t.datetime "when"
+    t.index ["vehicle"], name: "index_vehicle_locations_on_vehicle"
+    t.index ["vin"], name: "index_vehicle_locations_on_vin"
   end
-
-  add_index "vehicle_locations", ["vehicle"], name: "index_vehicle_locations_on_vehicle"
-  add_index "vehicle_locations", ["vin"], name: "index_vehicle_locations_on_vin"
 
 end

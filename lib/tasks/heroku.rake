@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :heroku do
   desc 'deploy local master, run migrations, restart and execute poll_and_persist_vehicles'
   task :deploy_and_run do

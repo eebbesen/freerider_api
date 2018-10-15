@@ -25,7 +25,7 @@ module DropboxPersistence
     fn = generate_filename
     begin
       client.upload(fn, data.to_s)
-    rescue => ex
+    rescue StandardError => ex
       Rails.logger.error "fn: #{fn}\ndata: #{data}"
       raise ex
     end

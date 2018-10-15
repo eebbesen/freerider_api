@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Mockish thing to simulate DropboxClient
 class TestDropboxClient

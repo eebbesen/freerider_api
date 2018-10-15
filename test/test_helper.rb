@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 require 'rails/test_help'
 require 'minitest/mock'
 
@@ -11,7 +13,7 @@ Minitest::Reporters.use!
 
 require 'dropbox_api'
 
-require File.expand_path('../helpers/test_dropbox_client', __FILE__)
+require File.expand_path('helpers/test_dropbox_client', __dir__)
 
 # save to CircleCI's artifacts directory if we're on CircleCI
 if ENV['CIRCLE_ARTIFACTS']

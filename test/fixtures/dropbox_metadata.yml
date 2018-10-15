@@ -1,7 +1,7 @@
-dropbox_metadata_one: 
-  cursor: BBHE27DErVS4`K9WlyrcubyUMvdtw9`ZYiCX`rNb9.krIV6FeS7dA7lZBD1yB`R6hpdJdTP4HoYdAcVF1bpDTRUqEqX1R99ZzyjgeWmdpBbTuVvCVek1KlbwAobReECiQtF
-  created_at: (Time.now - 8000)
+dropbox_metadata_one:
+  cursor: 'zBBHE27DErVS4`K9WlyrcubyUMvdtw9`ZYiCX`rNb9.krIV6FeS7dA7lZBD1yB`R6hpdJdTP4HoYdAcVF1bpDTRUqEqX1R99ZzyjgeWmdpBbTuVvCVek1KlbwAobReECiQtF'
+  created_at: <%= Time.now - 8000 %>
 
 dropbox_metadata_two:
   cursor: CCIF38EFsWT5aL1XmzsdvczVNweux1aAZjDYasOc1/lsJW7GfT8eB8mACE2zCaS7iqeKeUQ5IpZeBdWG2cqEUSVrFrY2S11AazkhfXneqCcUvWwDWfl2LmcxBpcSfFDjRuG
-  created_at: Time.now
+  created_at: <%= Time.now %>

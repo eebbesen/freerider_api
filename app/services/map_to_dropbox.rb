@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Dropbox map data
 class MapToDropbox
