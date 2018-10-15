@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'Query vehicle/locations from Car2Go and persist them to server-local database'
 task :poll_and_persist_vehicles, [:loc] => :environment do |_t, args|
   vlc = VehicleLocationsController.new

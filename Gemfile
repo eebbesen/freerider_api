@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gem 'rails', '5.2'
 # gem 'rails-api'
 
 gem 'caruby2go'
-gem 'pg'
 gem 'dropbox_api'
+gem 'pg'
 
 group :production do
   gem 'newrelic_rpm'
@@ -23,10 +25,10 @@ gem 'tzinfo-data'
 gem 'rails-controller-testing', group: :test
 
 group :test, :development do
+  gem 'bundle-audit'
   gem 'byebug'
   gem 'minitest-reporters'
   gem 'rubocop'
   gem 'simplecov'
   gem 'sqlite3'
-  gem 'bundle-audit'
 end

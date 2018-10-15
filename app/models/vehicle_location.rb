@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VehicleLocation < ActiveRecord::Base
   validates_presence_of :vehicle, :latitude, :longitude, :location, :vin
 
@@ -24,6 +26,7 @@ class VehicleLocation < ActiveRecord::Base
 
   def self.extract_when_from_filename(filename)
     return unless filename
+
     dt = filename.split('-').last
     d, t = dt.split('_')
     date = d.sub(/(\d{4})(\d{2})(\d{2})/, '\\1-\\2-\\3')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'date'
 
@@ -54,7 +56,7 @@ class DropboxPersistenceTest < ActiveSupport::TestCase
   test 'should handle Dropbox save issue' do
     Client = Struct.new(:blah) do
       def upload(_filename, _data)
-        raise RuntimeError.new 'horrible stuff'
+        raise 'horrible stuff'
       end
     end
     @dropbox_persistence = TestDropboxPersister.new('GREeN BAY', Client.new)

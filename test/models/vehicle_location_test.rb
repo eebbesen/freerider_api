@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class VehicleLocationTest < ActiveSupport::TestCase
@@ -96,7 +98,7 @@ class VehicleLocationTest < ActiveSupport::TestCase
   end
 
   test 'last days scope all excluded' do
-    VehicleLocation.all.map{|m| m.update_attribute(:created_at, Time.now - 3.days)}
+    VehicleLocation.all.map { |m| m.update_attribute(:created_at, Time.now - 3.days) }
     vs = VehicleLocation.last_days 2
     assert_equal 0, vs.count
   end
